@@ -10,6 +10,7 @@
       system = "x86_64-linux";
       modules = [
         ./hosts/nixos-vm/configuration.nix
+        ./modules/hyprland.nix
       ];
     };
   };
