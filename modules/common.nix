@@ -10,7 +10,7 @@
     curl
     htop
     iotop
-    neofetch
+    fastfetch
   ];
 
   i18n.defaultLocale = "en_US.UTF-8";
