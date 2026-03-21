@@ -13,14 +13,6 @@
 
   networking.networkmanager.enable = true;
 
-  time.timeZone = "Europe/Amsterdam";
-
-  i18n.defaultLocale = "en_US.UTF-8";
-  console = {
-   keyMap = "us";
-  };
-
-
   users.users.daveops = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
@@ -32,18 +24,9 @@
     ];
   };
 
-  programs.nix-ld.enable = true;
-
-  environment.systemPackages = with pkgs; [
-    vim
-    wget
-    git
-    curl
-    htop
-  ];
-
   services.openssh.enable = true;
 
+  networking.firewall.allowedTCPPorts = [ 5900 ];
 
   system.stateVersion = "25.11";
 
