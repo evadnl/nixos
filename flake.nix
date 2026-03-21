@@ -11,6 +11,7 @@
       modules = [
         ./hosts/nixos-vm/configuration.nix
         ./modules/hyprland.nix
+        ./modules/common.nix
       ];
     };
   };
