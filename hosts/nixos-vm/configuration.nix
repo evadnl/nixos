@@ -24,6 +24,10 @@
     ];
   };
 
+  environment.systemPackages = with pkgs; [
+    wayvnc
+  ];
+
   services.openssh.enable = true;
 
   networking.firewall.allowedTCPPorts = [ 5900 ];
