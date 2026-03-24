@@ -13,7 +13,7 @@
     # };
   };
 
-  outputs = { self, nixpkgs, ... }: {
+  outputs = { self, nixpkgs, disko, ...}: {
     nixosConfigurations.nixos-vm = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
@@ -22,9 +22,7 @@
         ./modules/common.nix
       ];
     };
-  };
-
-  outputs = { self, nixpkgs, disko, ...}: {
+    
     nixosConfigurations.ares = nixpkgs.lib.nixosSystem {
       sytem = "x86_64-linux";
       modules = [
