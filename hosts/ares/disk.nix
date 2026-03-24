@@ -2,7 +2,7 @@
   disko.devices = {
     disk = {
       main = {
-        device = "/dev/disk/by-id/PLACEHOLDER";
+        device = "/dev/disk/by-id/ata-Samsung_SSD_850_EVO_500GB_S2RBNX0K114352W";
         type = "disk";
         content = {
           type = "gpt";
@@ -56,16 +56,10 @@
                       "noatime" 
                     ];
                   };
-                  "@persist" = {
-                    mountpoint = "/persist";
-                    mountOptions = [ 
-                      "compress=zstd" 
-                      "noatime" 
-                    ];
-                  };
                   "@swap" = {
                     mountpoint = "/swap";
                     swap.swapfile.size = "36G";
+                  };
                 };
               };
             };
