@@ -22,9 +22,9 @@
         ./modules/common.nix
       ];
     };
-    
+
     nixosConfigurations.ares = nixpkgs.lib.nixosSystem {
-      sytem = "x86_64-linux";
+      system = "x86_64-linux";
       modules = [
         ./hosts/ares/disk.nix
         ./hosts/ares/configuration.nix
