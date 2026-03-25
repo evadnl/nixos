@@ -15,7 +15,14 @@
 
   users.users.daveops = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
+    extraGroups = [ 
+        "wheel"
+        "video"
+        "audio"
+        "input"
+        "render"
+        "networkmanager" 
+    ];
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHQhHxbdxyugSWR/w0EfjXl7HlCFqE5/WoonT7z8I27R"
     ];
@@ -30,7 +37,7 @@
 
   services.openssh.enable = true;
 
-  networking.firewall.allowedTCPPorts = [ 5900 ];
+  networking.firewall.allowedTCPPorts = [ 5900 ]; # wayvnc
 
   system.stateVersion = "25.11";
 

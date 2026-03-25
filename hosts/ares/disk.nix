@@ -15,45 +15,48 @@
                 format = "vfat";
                 mountpoint = "/boot";
                 mountOptions = [ "umask=0077" ];
-                extraArgs = [ "-n" "BOOT" ];
+                extraArgs = [
+                  "-n"
+                  "BOOT"
+                ];
               };
             };
             root = {
               size = "100%";
               content = {
                 type = "btrfs";
-                extraArgs = [ 
+                extraArgs = [
                   "-L"
                   "nixos"
-                  "-f" 
+                  "-f"
                 ];
                 subvolumes = {
                   "@" = {
                     mountpoint = "/";
-                    mountOptions = [ 
-                      "compress=zstd" 
-                      "noatime" 
+                    mountOptions = [
+                      "compress=zstd"
+                      "noatime"
                     ];
                   };
                   "@home" = {
                     mountpoint = "/home";
-                    mountOptions = [ 
-                      "compress=zstd" 
-                      "noatime" 
+                    mountOptions = [
+                      "compress=zstd"
+                      "noatime"
                     ];
                   };
                   "@nix" = {
                     mountpoint = "/nix";
-                    mountOptions = [ 
-                      "compress=zstd" 
-                      "noatime" 
+                    mountOptions = [
+                      "compress=zstd"
+                      "noatime"
                     ];
                   };
                   "@log" = {
                     mountpoint = "/var/log";
-                    mountOptions = [ 
-                      "compress=zstd" 
-                      "noatime" 
+                    mountOptions = [
+                      "compress=zstd"
+                      "noatime"
                     ];
                   };
                   "@swap" = {
