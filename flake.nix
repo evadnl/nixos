@@ -49,7 +49,7 @@
           ./modules/amd-cpu.nix
           ./modules/nvidia.nix
           ./modules/locale.nix
-          ./modules/lanzaboot.nix
+          ./modules/lanzaboote.nix
         ];
       };
     };
