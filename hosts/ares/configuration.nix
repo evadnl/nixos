@@ -26,13 +26,16 @@
   };
 
   # Basic packages for first boot
-  environment.systemPackages = with pkgs; [
-    vim
-    git
-    curl
-    htop
-    fastfetch
-  ];
+  environment = {
+    systemPackages = with pkgs; [
+      vim
+      git
+      curl
+      htop
+      fastfetch
+      ghosttty
+    ];
+  };
 
   # Enable SSH so you can work from another machine if needed
   services.openssh.enable = true;
