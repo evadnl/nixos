@@ -33,7 +33,7 @@
       curl
       htop
       fastfetch
-      ghosttty
+      ghostty
     ];
   };
 
