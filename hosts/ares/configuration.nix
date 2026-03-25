@@ -34,6 +34,7 @@
       htop
       fastfetch
       ghostty
+      sbctl
     ];
   };
 
