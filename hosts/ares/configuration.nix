@@ -1,19 +1,16 @@
 { config, pkgs, ... }:
 
 {
-  # Hostname
+
+  os.secureBoot.enable = true;
+
+  # Network
   networking.hostName = "ares";
+  networking.networkmanager.enable = true;
 
   # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
-  # Networking
-  networking.networkmanager.enable = true;
-
-  # Timezone & Locale
-  time.timeZone = "Europe/Amsterdam";
-  i18n.defaultLocale = "en_US.UTF-8";
 
   # User
   users.users.evad = {
