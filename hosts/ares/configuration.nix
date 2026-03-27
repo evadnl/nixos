@@ -1,7 +1,6 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
-
   os.secureBoot.enable = true;
 
   # Network

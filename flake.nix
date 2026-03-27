@@ -22,7 +22,6 @@
 
   outputs =
     {
-      self,
       nixpkgs,
       disko,
       lanzaboote,
@@ -50,6 +49,7 @@
           ./modules/drivers/nvidia.nix
           ./modules/os/locale.nix
           ./modules/os/lanzaboote.nix
+          ./modules/networking/firewall.nix
         ];
       };
     };
