@@ -1,26 +1,39 @@
-{ config, lib, pkgs, ... }:
-
 {
-  programs.hyprland.enable = true;
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
-  # Sound settings
-  services.pipewire = {
-    enable = true;
-    pulse.enable = true;
+let
+  cfg = config.desktop.hyprland;
+in
+{
+  options.desktop.hyprland = {
+    enable = lib.mkEnableOption "Hyprland desktop environment";
   };
 
-  services.greetd = {
-    enable = true;
-    settings = {
-      default_session = {
-        command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd Hyprland";
-        user = "greeter";
+  config = lib.mkIf cfg.enable {
+    programs.hyprland.enable = true;
+
+    # Sound settings
+    services.pipewire = {
+      enable = true;
+      pulse.enable = true;
+    };
+
+    services.greetd = {
+      enable = true;
+      settings = {
+        default_session = {
+          command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd Hyprland";
+          user = "greeter";
+        };
       };
     };
+
+    environment.systemPackages = with pkgs; [
+      kitty
+    ];
   };
-
-  environment.systemPackages = with pkgs; [
-    kitty
-  ];
-
 }

@@ -1,0 +1,12 @@
+keys:
+  hosts:
+    - &ares age1fc0mjgpmsahcfyup7rcx85vrx3gjjr5qj7sz45z5hxffxq49j5ls4r6822
+  users:
+    - &evad age1pwpyc73fs3tkrfq9ruwups7yaxgq4gzxr5e5qjpqs839evwpjg2qemlxkd
+
+creation_rules:
+  - path_regex: secrets\.yaml$
+    key_groups:
+      - age:
+          - *ares
+          - *evad

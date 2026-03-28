@@ -29,21 +29,24 @@ nixfmt **/*.nix
 ## Structure
 
 ```
-flake.nix          # Inputs: nixpkgs (unstable), disko, lanzaboote
+flake.nix          # Inputs: nixpkgs (unstable), disko, lanzaboote, sops-nix
+secrets.yaml       # SOPS-encrypted secrets (see Secret Management below)
+.sops.yaml         # SOPS key configuration
 hosts/
-  ares/            # Hardware config, disk layout (disko/btrfs), host packages
-  nixos-vm/        # Simpler VM config with wayvnc
+  <host>/          # Hardware config + host-specific options
 modules/
   common.nix       # Shared packages across hosts
-  hyprland.nix     # Wayland compositor, Pipewire audio, greetd login
+  hyprland.nix     # Wayland compositor, Pipewire audio, greetd login (desktop.hyprland.enable)
+  user/
+    default.nix    # Primary user configuration (user.enable)
   drivers/
-    amd-cpu.nix    # AMD microcode updates
-    nvidia.nix     # NVIDIA closed-source driver (open kernel module for Blackwell)
-  networking/
-    firewall.nix   # nftables firewall, SSH restricted to trusted subnets
+    amd-cpu.nix    # AMD microcode updates (drivers.amdCpu.enable)
+    nvidia.nix     # NVIDIA closed-source driver (drivers.nvidia.enable)
+  network/
+    firewall.nix   # nftables firewall, SSH restricted to trusted subnets (network.firewall.enable)
   os/
     locale.nix     # Timezone (Europe/Amsterdam), keyboard (us-intl)
-    lanzaboote.nix # Secure Boot module wrapping upstream lanzaboote
+    lanzaboote.nix # Secure Boot module wrapping upstream lanzaboote (os.secureBoot.enable)
 ```
 
 ## Secure Boot (ares only)
@@ -53,6 +56,56 @@ Lanzaboote is used for Secure Boot. Initial key enrollment:
 ```bash
 sudo sbctl create-keys
 sudo sbctl enroll-keys
+```
+
+## Secret Management
+
+Secrets (SSH keys, passwords, etc.) are encrypted with [sops-nix](https://github.com/Mic92/sops-nix) using [age](https://age-encryption.org/) keys. Each host decrypts its own secrets at activation time using its SSH host key.
+
+### Adding a new host
+
+**1. Get the host's age public key** (run on the host):
+```bash
+nix-shell -p ssh-to-age --run "ssh-to-age < /etc/ssh/ssh_host_ed25519_key.pub"
+```
+
+**2. Add it to `.sops.yaml`:**
+```yaml
+keys:
+  - &my-host age1abc123...
+
+creation_rules:
+  - path_regex: secrets\.yaml$
+    key_groups:
+      - age:
+          - *my-host
+```
+
+**3. Re-encrypt `secrets.yaml` for the new host:**
+```bash
+sops updatekeys secrets.yaml
+```
+
+**4. Tell NixOS where to find the age key** (in the host's configuration):
+```nix
+sops.defaultSopsFile = ../../secrets.yaml;
+sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+```
+
+### Editing secrets
+
+```bash
+sops secrets.yaml
+```
+
+Opens your editor with the decrypted content. Saving re-encrypts automatically.
+
+### Editing from a dev machine
+
+Generate a personal age key and add its public key to `.sops.yaml`, then re-encrypt:
+```bash
+age-keygen -o ~/.config/sops/age/keys.txt  # one-time setup
+sops updatekeys secrets.yaml
 ```
 
 ## MCP Server

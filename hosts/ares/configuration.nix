@@ -2,6 +2,25 @@
 
 {
   os.secureBoot.enable = true;
+  drivers.nvidia.enable = true;
+  drivers.amdCpu.enable = true;
+  network.firewall.enable = true;
+
+  # User
+  user = {
+    enable = true;
+    name = "evad";
+    wheel = true;
+    extraGroups = [ "networkmanager" ];
+    initialPassword = "changeme";
+    sshPrivateKey.enable = true;
+    authorizedKeys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHQhHxbdxyugSWR/w0EfjXl7HlCFqE5/WoonT7z8I27R evad@mac-mini"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICKD/PwfpR53eyK9lKcatVPEscMEv4nosDF23VeU0vqT evad@macbook-pro"
+    ];
+  };
+
+  sops.defaultSopsFile = ../../secrets.yaml;
 
   # Network
   networking.hostName = "ares";
@@ -10,16 +29,6 @@
   # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
-  # User
-  users.users.evad = {
-    isNormalUser = true;
-    extraGroups = [
-      "wheel"
-      "networkmanager"
-    ];
-    initialPassword = "changeme";
-  };
 
   # Basic packages for first boot
   environment = {
