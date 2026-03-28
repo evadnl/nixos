@@ -108,6 +108,31 @@ age-keygen -o ~/.config/sops/age/keys.txt  # one-time setup
 sops updatekeys secrets.yaml
 ```
 
+## User Module
+
+The `modules/user/default.nix` module provides a declarative way to configure the primary user per host via `user.*` options.
+
+### Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `user.enable` | bool | Enable the module |
+| `user.name` | string | Username |
+| `user.wheel` | bool | Grant sudo access via the wheel group |
+| `user.extraGroups` | list | Additional groups |
+| `user.authorizedKeys` | list | SSH public keys allowed to log in |
+| `user.packages` | list | User-specific packages |
+| `user.initialPassword` | string | Plaintext password — change after first login |
+| `user.sshPrivateKey.enable` | bool | Deploy an SSH private key from SOPS secrets |
+
+### Authorized keys
+
+Keys listed in `user.authorizedKeys` are **not** placed in `~/.ssh/authorized_keys`. NixOS manages them at `/etc/ssh/authorized_keys.d/<username>`, which OpenSSH reads via the `AuthorizedKeysFile` directive. This means the file is owned by root and cannot be accidentally overwritten by the user.
+
+### SSH private key
+
+When `user.sshPrivateKey.enable = true`, the secret `ssh_private_key` from `secrets.yaml` is decrypted at activation time and stored in `/run/secrets/ssh_private_key`. The path `/home/<user>/.ssh/id_ed25519` is a symlink pointing there, with mode `0600` and owned by the user.
+
 ## MCP Server
 
 This repo includes an `.mcp.json` that configures the [mcp-nixos](https://github.com/utensils/mcp-nixos) server for use with Claude Code. It allows querying NixOS options, packages, and documentation directly from the editor.
