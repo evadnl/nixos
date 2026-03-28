@@ -10,6 +10,7 @@
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nixpkgs.config.allowUnfree = true;
+  security.hardening.profile = "workstation";
   system.stateVersion = "26.05";
 
 

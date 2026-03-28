@@ -60,6 +60,9 @@
           ./modules/os/lanzaboote.nix
           ./modules/network/firewall.nix
           ./modules/user/default.nix
+          ./modules/security/default.nix
+          ./modules/security/server.nix
+          ./modules/security/workstation.nix
         ];
       };
     };

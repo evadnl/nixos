@@ -44,10 +44,58 @@ modules/
     nvidia.nix     # NVIDIA closed-source driver (drivers.nvidia.enable)
   network/
     firewall.nix   # nftables firewall, SSH restricted to trusted subnets (network.firewall.enable)
+  security/
+    default.nix    # Base hardening: SSH, kernel sysctl, protectKernelImage (security.hardening.profile)
+    server.nix     # Server profile: fail2ban, auditd, module blacklist, no sleep
+    workstation.nix # Workstation profile: AppArmor
   os/
     locale.nix     # Timezone (Europe/Amsterdam), keyboard (us-intl)
     lanzaboote.nix # Secure Boot module wrapping upstream lanzaboote (os.secureBoot.enable)
 ```
+
+## Host Configuration Structure
+
+Each host's `configuration.nix` follows a consistent section layout using comment headers:
+
+```nix
+# ===========================================================
+# SYSTEM
+# ===========================================================
+# Boot loader, stateVersion, nix settings, unfree packages,
+# and system-wide security profile.
+
+# ===========================================================
+# HARDWARE
+# ===========================================================
+# Host-specific hardware modules: drivers, secure boot.
+
+# ===========================================================
+# DESKTOP
+# ===========================================================
+# Display environment (Hyprland). Omit on headless hosts.
+
+# ===========================================================
+# USER
+# ===========================================================
+# Primary user configuration and SOPS secrets.
+
+# ===========================================================
+# NETWORKING
+# ===========================================================
+# Hostname, networkmanager, firewall.
+
+# ===========================================================
+# SERVICES
+# ===========================================================
+# System services such as OpenSSH.
+
+# ===========================================================
+# PACKAGES
+# ===========================================================
+# Host-specific system packages.
+```
+
+Not every section is required — omit sections that don't apply to the host (e.g. no DESKTOP on a server, no HARDWARE if no special drivers are needed).
 
 ## Secure Boot (ares only)
 
@@ -132,6 +180,55 @@ Keys listed in `user.authorizedKeys` are **not** placed in `~/.ssh/authorized_ke
 ### SSH private key
 
 When `user.sshPrivateKey.enable = true`, the secret `ssh_private_key` from `secrets.yaml` is decrypted at activation time and stored in `/run/secrets/ssh_private_key`. The path `/home/<user>/.ssh/id_ed25519` is a symlink pointing there, with mode `0600` and owned by the user.
+
+## Security Hardening
+
+The `modules/security/` modules provide system hardening via a single `security.hardening.profile` option. Set it in the SYSTEM section of the host's `configuration.nix`:
+
+```nix
+security.hardening.profile = "workstation"; # or "server"
+```
+
+### Base hardening (both profiles)
+
+Always applied when a profile is set.
+
+| What | Why |
+|------|-----|
+| SSH: disable root login, password auth, X11 forwarding | Reduce SSH attack surface to key-based auth only |
+| SSH: `LoginGraceTime = 30`, `MaxAuthTries = 3` | Limit brute force window |
+| SSH: disable agent and TCP forwarding | Prevent tunneling through the host |
+| `security.protectKernelImage = true` | Block writes to `/dev/mem` and kernel image modification |
+| `security.sudo.execWheelOnly = true` | Prevent arbitrary scripts from being run via sudo |
+| `kernel.kptr_restrict = 2` | Hide kernel pointers from unprivileged users |
+| `kernel.dmesg_restrict = 1` | Restrict kernel log to privileged users |
+| `kernel.yama.ptrace_scope = 1` | Restrict ptrace to parent processes (limits debugger attach) |
+| `net.ipv4.tcp_syncookies = 1` | SYN flood protection |
+| Disable ICMP redirects (send + accept) | Prevent route hijacking via ICMP |
+| Reverse path filtering | Drop packets with spoofed source addresses |
+
+### Workstation profile
+
+```nix
+security.hardening.profile = "workstation";
+```
+
+| What | Why |
+|------|-----|
+| `security.apparmor.enable = true` | Mandatory access control — confines programs to predefined profiles. Even if an application is exploited, it cannot access resources outside its profile. |
+
+### Server profile
+
+```nix
+security.hardening.profile = "server";
+```
+
+| What | Why |
+|------|-----|
+| `fail2ban` | Bans IPs after 5 failed SSH attempts. Ban time doubles with each repeat offence, capped at 1 week. |
+| `security.auditd` | Kernel-level audit log for tracking security-relevant events |
+| Disable sleep/suspend/hibernate targets | Servers should never sleep — prevents accidental downtime |
+| Blacklist `usb-storage`, `firewire-core`, `thunderbolt` | Reduce attack surface for physical access attacks on headless servers |
 
 ## MCP Server
 
