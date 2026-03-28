@@ -1,12 +1,31 @@
 { pkgs, ... }:
 
 {
+  # ===========================================================
+  # SYSTEM
+  # ===========================================================
+
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nixpkgs.config.allowUnfree = true;
+  system.stateVersion = "26.05";
+
+
+  # ===========================================================
+  # HARDWARE
+  # ===========================================================
+
   os.secureBoot.enable = true;
   drivers.nvidia.enable = true;
   drivers.amdCpu.enable = true;
-  network.firewall.enable = true;
 
-  # User
+
+  # ===========================================================
+  # USER
+  # ===========================================================
+
   user = {
     enable = true;
     name = "evad";
@@ -22,37 +41,34 @@
 
   sops.defaultSopsFile = ../../secrets.yaml;
 
-  # Network
+
+  # ===========================================================
+  # NETWORKING
+  # ===========================================================
+
   networking.hostName = "ares";
   networking.networkmanager.enable = true;
+  network.firewall.enable = true;
 
-  # Bootloader
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
 
-  # Basic packages for first boot
-  environment = {
-    systemPackages = with pkgs; [
-      vim
-      git
-      curl
-      htop
-      fastfetch
-      ghostty
-      sbctl
-    ];
-  };
+  # ===========================================================
+  # SERVICES
+  # ===========================================================
 
-  # Enable SSH so you can work from another machine if needed
   services.openssh.enable = true;
 
-  # Nix settings
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
-  nixpkgs.config.allowUnfree = true;
 
-  # NixOS release
-  system.stateVersion = "26.05";
+  # ===========================================================
+  # PACKAGES
+  # ===========================================================
+
+  environment.systemPackages = with pkgs; [
+    vim
+    git
+    curl
+    htop
+    fastfetch
+    ghostty
+    sbctl
+  ];
 }
