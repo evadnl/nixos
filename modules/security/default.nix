@@ -21,6 +21,9 @@ in
     security.hardening.workstation.enable = lib.mkIf (cfg.profile == "workstation") true;
     security.hardening.server.enable = lib.mkIf (cfg.profile == "server") true;
 
+    # Clean /tmp on every boot to prevent leftover sensitive data
+    boot.tmp.cleanOnBoot = true;
+
     # Prevent writing to kernel image (/dev/mem, /dev/kmem)
     security.protectKernelImage = true;
 
