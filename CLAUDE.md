@@ -4,22 +4,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Repo Is
 
-Personal NixOS flake configuration managing two systems:
-- **ares**: Main workstation (AMD Ryzen 7 9800X3D + RTX 5080, Secure Boot via Lanzaboote)
-- **nixos-vm**: QEMU virtual machine for testing
+Personal NixOS flake configuration managing multiple systems. Each host lives under `hosts/<hostname>/` and is wired into `flake.nix`.
 
 ## Common Commands
 
 ```bash
 # Apply config to the current system (run on the NixOS machine)
-sudo nixos-rebuild switch --flake .#ares
-sudo nixos-rebuild switch --flake .#nixos-vm
+sudo nixos-rebuild switch --flake .#<hostname>
 
 # Test without making permanent (rolls back on reboot)
-sudo nixos-rebuild test --flake .#ares
+sudo nixos-rebuild test --flake .#<hostname>
 
 # Build without applying (useful for checking errors)
-nix build .#nixosConfigurations.ares.config.system.build.toplevel
+nix build .#nixosConfigurations.<hostname>.config.system.build.toplevel
 
 # Format Nix files
 nixfmt **/*.nix
@@ -28,35 +25,100 @@ nixfmt **/*.nix
 ## Architecture
 
 ```
-flake.nix          # Inputs: nixpkgs (unstable), disko, lanzaboote, home-manager (unused)
+flake.nix          # Inputs: nixpkgs (unstable), disko, lanzaboote, sops-nix
+secrets.yaml       # SOPS-encrypted secrets (age)
+.sops.yaml         # age key configuration for hosts and users
 hosts/
-  ares/            # Hardware config + host-specific packages/users
-  nixos-vm/        # Simpler VM config with wayvnc for headless access
+  <hostname>/      # Hardware config + host-specific configuration.nix
 modules/
-  common.nix       # Shared packages applied across hosts
-  hyprland.nix     # Wayland compositor, Pipewire audio, greetd login
-  drivers/         # Hardware drivers (AMD CPU microcode, NVIDIA closed-source)
-  os/              # OS-level: locale (Europe/Amsterdam, en_US), lanzaboote secure boot
-  services/        # (empty, reserved for future services)
-  user/            # (empty, reserved for future user configs)
+  common.nix       # Shared packages applied across all hosts
+  hyprland.nix     # Wayland compositor, Pipewire audio, greetd login (desktop.hyprland.enable)
+  drivers/         # Hardware drivers (drivers.amdCpu.enable, drivers.nvidia.enable)
+  network/         # Firewall with SSH subnet restrictions (network.firewall.enable)
+  os/              # Locale, Lanzaboote secure boot (os.secureBoot.enable)
+  security/        # System hardening profiles (security.hardening.profile)
+  user/            # Primary user configuration (user.enable)
 ```
 
-### How Modules Are Wired
+## Adding a New Host
 
-Each host's `configuration.nix` imports modules from `../../modules/`. Modules use NixOS option patterns (e.g., `options.os.secureBoot.enable`) so features can be toggled per-host. The `ares` host uses disko for declarative disk partitioning — disk is identified by ID, not device name (see [hosts/ares/disk.nix](hosts/ares/disk.nix)).
+1. Create `hosts/<hostname>/configuration.nix` and `hosts/<hostname>/hardware-configuration.nix`
+2. Add the host to `flake.nix` under `nixosConfigurations.<hostname>`, importing the relevant modules
+3. If the host needs SOPS secrets: get its age public key (`ssh-to-age < /etc/ssh/ssh_host_ed25519_key.pub`), add it to `.sops.yaml`, then run `sops updatekeys secrets.yaml`
+4. Structure `configuration.nix` using the standard section headers (see below)
 
-### Secure Boot (Lanzaboote)
+## Module Conventions
 
-The `modules/os/lanzaboote.nix` module wraps the upstream lanzaboote module with a local `os.secureBoot.enable` option. Initial enrollment requires:
+All modules follow the same pattern:
+- Expose a NixOS option (e.g. `options.foo.enable`) so features can be toggled per-host
+- Wrap all config in `lib.mkIf cfg.enable { ... }`
+- Use `let cfg = config.<namespace>; in` at the top
+
+When adding a new module, wire it into the relevant hosts in `flake.nix`.
+
+## Host Configuration Structure
+
+Each `configuration.nix` uses consistent section headers in this order. Omit sections that don't apply to the host (e.g. no DESKTOP on a server).
+
+```nix
+# ===========================================================
+# SYSTEM
+# ===========================================================
+# Boot loader, stateVersion, nix settings, security profile
+
+# ===========================================================
+# HARDWARE
+# ===========================================================
+# Host-specific hardware modules: drivers, secure boot
+
+# ===========================================================
+# DESKTOP
+# ===========================================================
+# Display environment — omit on headless/server hosts
+
+# ===========================================================
+# USER
+# ===========================================================
+# Primary user config and SOPS secrets
+
+# ===========================================================
+# NETWORKING
+# ===========================================================
+# Hostname, networkmanager, firewall
+
+# ===========================================================
+# SERVICES
+# ===========================================================
+# System services (openssh, etc.)
+
+# ===========================================================
+# PACKAGES
+# ===========================================================
+# Host-specific system packages
+```
+
+## Key Modules
+
+### User (`user.*`)
+Declarative primary user. Set `user.sshPrivateKey.enable = true` to deploy the `ssh_private_key` secret from `secrets.yaml` to `/home/<user>/.ssh/id_ed25519` (symlink to `/run/secrets/ssh_private_key`). Authorized keys go in `user.authorizedKeys` — NixOS places them at `/etc/ssh/authorized_keys.d/<user>`, not `~/.ssh/authorized_keys`.
+
+### Security hardening (`security.hardening.profile`)
+Set to `"workstation"` or `"server"`. Both profiles apply base hardening (SSH, kernel sysctl, protectKernelImage, sudo.execWheelOnly). The workstation profile adds AppArmor; the server profile adds fail2ban, auditd, disabled sleep targets, and blacklisted USB/Firewire/Thunderbolt kernel modules.
+
+### Secure Boot (`os.secureBoot.enable`)
+Wraps lanzaboote. Initial enrollment on a new machine:
 ```bash
 sudo sbctl create-keys
 sudo sbctl enroll-keys
 ```
 
-### Unfree Packages
+### SOPS secrets
+Secrets are encrypted with age keys. Each host decrypts using its SSH host key (`/etc/ssh/ssh_host_ed25519_key`). The user's personal age key is also a recipient so secrets can be edited from a dev machine. Edit secrets with `sops secrets.yaml`.
 
-`nixpkgs.config.allowUnfree = true` is set globally; this is required for the NVIDIA driver.
+## Unfree Packages
 
-### Home Manager
+Set `nixpkgs.config.allowUnfree = true` on any host that requires proprietary software (e.g. NVIDIA driver).
+
+## Home Manager
 
 Listed as a flake input but currently commented out — not yet wired into any host configuration.
