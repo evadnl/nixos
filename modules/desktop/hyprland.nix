@@ -7,6 +7,42 @@
 
 let
   cfg = config.desktop.hyprland;
+
+  # Catppuccin Mocha — Blue (#89b4fa) for diagonal arms, Mauve (#cba6f7) for horizontal arms
+  b = "\\e[38;2;137;180;250m";
+  m = "\\e[38;2;203;166;247m";
+  r = "\\e[0m";
+
+  greeting = lib.concatStringsSep "\\n" [
+    "${b}          ▗▄▄▄       ▗▄▄▄▄    ▄▄▄▖${r}"
+    "${b}          ▜███▙       ▜███▙  ▟███▛${r}"
+    "${b}           ▜███▙       ▜███▙▟███▛${r}"
+    "${b}            ▜███▙       ▜██████▛${r}"
+    "${m}     ▟█████████████████▙ ▜████▛     ▟▙${r}"
+    "${m}    ▟███████████████████▙ ▜███▙    ▟██▙${r}"
+    "${b}           ▄▄▄▄▖           ▜███▙  ▟███▛${r}"
+    "${b}          ▟███▛             ▜██▛ ▟███▛${r}"
+    "${b}         ▟███▛               ▜▛ ▟███▛${r}"
+    "${m}▟███████████▛                  ▟██████████▙${r}"
+    "${m}▜██████████▛                  ▟███████████▛${r}"
+    "${b}      ▟███▛ ▟▙               ▟███▛${r}"
+    "${b}     ▟███▛ ▟██▙             ▟███▛${r}"
+    "${b}    ▟███▛  ▜███▙           ▝▀▀▀▀${r}"
+    "${m}    ▜██▛    ▜███▙ ▜██████████████████▛${r}"
+    "${m}     ▜▛     ▟████▙ ▜████████████████▛${r}"
+    "${b}           ▟██████▙         ▜███▙${r}"
+    "${b}          ▟███▛▜███▙         ▜███▙${r}"
+    "${b}         ▟███▛  ▜███▙         ▜███▙${r}"
+    "${b}         ▝▀▀▀    ▀▀▀▀▘         ▀▀▀▘${r}"
+  ];
+
+  greetScript = pkgs.writeShellScript "tuigreet-wrapper" ''
+    exec ${pkgs.tuigreet}/bin/tuigreet \
+      --time \
+      --remember \
+      --greeting "$(printf '${greeting}')" \
+      --cmd Hyprland
+  '';
 in
 {
   options.desktop.hyprland = {
@@ -16,7 +52,6 @@ in
   config = lib.mkIf cfg.enable {
     programs.hyprland.enable = true;
 
-    # Sound settings
     security.rtkit.enable = true;
 
     services.pipewire = {
@@ -29,7 +64,7 @@ in
       enable = true;
       settings = {
         default_session = {
-          command = "${pkgs.tuigreet}/bin/tuigreet --time --remember --cmd Hyprland";
+          command = "${greetScript}";
           user = "greeter";
         };
       };
