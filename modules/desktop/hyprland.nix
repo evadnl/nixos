@@ -17,16 +17,19 @@ in
     programs.hyprland.enable = true;
 
     # Sound settings
+    security.rtkit.enable = true;
+
     services.pipewire = {
       enable = true;
       pulse.enable = true;
+      alsa.enable = true;
     };
 
     services.greetd = {
       enable = true;
       settings = {
         default_session = {
-          command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd Hyprland";
+          command = "${pkgs.tuigreet}/bin/tuigreet --time --user ${config.user.name} --cmd Hyprland";
           user = "greeter";
         };
       };

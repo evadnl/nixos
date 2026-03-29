@@ -39,7 +39,7 @@
         modules = [
           sops-nix.nixosModules.sops
           ./hosts/nixos-vm/configuration.nix
-          ./modules/hyprland.nix
+          ./modules/desktop/hyprland.nix
           ./modules/common.nix
           ./modules/user/default.nix
         ];
@@ -54,10 +54,12 @@
           ./hosts/ares/disk.nix
           ./hosts/ares/configuration.nix
           ./hosts/ares/hardware-configuration.nix
+          ./modules/desktop/hyprland.nix
           ./modules/drivers/amd-cpu.nix
           ./modules/drivers/nvidia.nix
           ./modules/os/locale.nix
           ./modules/os/lanzaboote.nix
+          ./modules/os/wayland.nix
           ./modules/network/firewall.nix
           ./modules/user/default.nix
           ./modules/security/default.nix
