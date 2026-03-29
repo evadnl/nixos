@@ -11,19 +11,14 @@ Personal NixOS flake configuration managing two systems.
 
 ## Usage
 
+Commands are managed with [just](https://github.com/casey/just). All rebuild commands require an explicit `HOST` argument.
+
 ```bash
-# Apply config to the current system
-sudo nixos-rebuild switch --flake .#ares
-sudo nixos-rebuild switch --flake .#nixos-vm
-
-# Test without making permanent (rolls back on reboot)
-sudo nixos-rebuild test --flake .#ares
-
-# Build without applying (useful for checking errors)
-nix build .#nixosConfigurations.ares.config.system.build.toplevel
-
-# Format Nix files
-nixfmt **/*.nix
+just switch ares       # Apply configuration
+just test ares         # Test without making permanent (rolls back on reboot)
+just build ares        # Build without applying (useful for checking errors)
+just update ares       # Update flake inputs and switch
+just fmt               # Format all Nix files
 ```
 
 ## Structure
