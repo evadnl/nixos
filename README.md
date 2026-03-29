@@ -19,6 +19,9 @@ just test ares         # Test without making permanent (rolls back on reboot)
 just build ares        # Build without applying (useful for checking errors)
 just update ares       # Update flake inputs and switch
 just fmt               # Format all Nix files
+just secrets           # Edit SOPS secrets
+just update-keys       # Re-encrypt secrets after adding a host to .sops.yaml
+just host-key          # Print this machine's age public key (run on the new host)
 ```
 
 ## Structure
