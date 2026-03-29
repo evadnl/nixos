@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 
@@ -49,15 +50,22 @@ in
     sshPrivateKey = {
       enable = lib.mkEnableOption "SSH private key deployed via SOPS";
     };
+
+    zsh = {
+      enable = lib.mkEnableOption "zsh as the default shell";
+    };
   };
 
   config = lib.mkIf cfg.enable {
+    programs.zsh.enable = lib.mkIf cfg.zsh.enable true;
+
     users.users.${cfg.name} =
       {
         isNormalUser = true;
         extraGroups = cfg.extraGroups ++ lib.optionals cfg.wheel [ "wheel" ];
         openssh.authorizedKeys.keys = cfg.authorizedKeys;
         packages = cfg.packages;
+        shell = lib.mkIf cfg.zsh.enable pkgs.zsh;
       }
       // lib.optionalAttrs (cfg.initialPassword != null) {
         initialPassword = cfg.initialPassword;
