@@ -97,6 +97,27 @@ Each host's `configuration.nix` follows a consistent section layout using commen
 
 Not every section is required — omit sections that don't apply to the host (e.g. no DESKTOP on a server, no HARDWARE if no special drivers are needed).
 
+## Updating Packages
+
+Flake inputs (nixpkgs, etc.) are pinned in `flake.lock`. To update them:
+
+```bash
+# Update all inputs
+nix flake update
+
+# Or update a single input
+nix flake update nixpkgs
+
+# Then apply
+sudo nixos-rebuild switch --flake .#ares
+
+# Commit the updated lock file
+git add flake.lock
+git commit -m "flake: update inputs"
+```
+
+`nixos-rebuild switch` reads `flake.lock` as-is and will not modify it — only `nix flake update` changes the lock file.
+
 ## Secure Boot (ares only)
 
 Lanzaboote is used for Secure Boot. Initial key enrollment:
