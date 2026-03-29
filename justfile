@@ -18,3 +18,15 @@ update host:
 # Format all Nix files
 fmt:
     nixfmt **/*.nix
+
+# Edit SOPS secrets
+secrets:
+    sops secrets.yaml
+
+# Re-encrypt secrets.yaml after adding a new host to .sops.yaml
+update-keys:
+    sops updatekeys secrets.yaml
+
+# Print the age public key for this machine (run on the new host)
+host-key:
+    nix run nixpkgs#ssh-to-age -- < /etc/ssh/ssh_host_ed25519_key.pub

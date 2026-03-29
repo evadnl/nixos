@@ -9,5 +9,6 @@
     htop
     iotop
     fastfetch
+    just
   ];
 }
