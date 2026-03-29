@@ -32,10 +32,10 @@ hosts/
   <hostname>/      # Hardware config + host-specific configuration.nix
 modules/
   common.nix       # Shared packages applied across all hosts
-  hyprland.nix     # Wayland compositor, Pipewire audio, greetd login (desktop.hyprland.enable)
+  desktop/         # Desktop environments (desktop.hyprland.enable)
   drivers/         # Hardware drivers (drivers.amdCpu.enable, drivers.nvidia.enable)
   network/         # Firewall with SSH subnet restrictions (network.firewall.enable)
-  os/              # Locale, Lanzaboote secure boot (os.secureBoot.enable)
+  os/              # Locale, Lanzaboote secure boot, Wayland (os.secureBoot.enable, os.wayland.enable)
   security/        # System hardening profiles (security.hardening.profile)
   user/            # Primary user configuration (user.enable)
 ```
@@ -101,6 +101,12 @@ Each `configuration.nix` uses consistent section headers in this order. Omit sec
 
 ### User (`user.*`)
 Declarative primary user. Set `user.sshPrivateKey.enable = true` to deploy the `ssh_private_key` secret from `secrets.yaml` to `/home/<user>/.ssh/id_ed25519` (symlink to `/run/secrets/ssh_private_key`). Authorized keys go in `user.authorizedKeys` — NixOS places them at `/etc/ssh/authorized_keys.d/<user>`, not `~/.ssh/authorized_keys`.
+
+### Hyprland (`desktop.hyprland.enable`)
+Wayland compositor with Pipewire audio (PulseAudio + ALSA compat), rtkit for realtime scheduling, and greetd/tuigreet login manager. The greeter pre-fills the username from `config.user.name`. Enable alongside `os.wayland.enable` on any desktop host.
+
+### Wayland (`os.wayland.enable`)
+Sets NVIDIA-specific Wayland environment variables (`GBM_BACKEND`, `LIBVA_DRIVER_NAME`, `__GLX_VENDOR_LIBRARY_NAME`, `NVD_BACKEND`, `NIXOS_OZONE_WL`). Enable on any host running a Wayland compositor with an NVIDIA GPU.
 
 ### Security hardening (`security.hardening.profile`)
 Set to `"workstation"` or `"server"`. Both profiles apply base hardening (SSH, kernel sysctl, protectKernelImage, sudo.execWheelOnly). The workstation profile adds AppArmor; the server profile adds fail2ban, auditd, disabled sleep targets, and blacklisted USB/Firewire/Thunderbolt kernel modules.

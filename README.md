@@ -36,12 +36,13 @@ hosts/
   <host>/          # Hardware config + host-specific options
 modules/
   common.nix       # Shared packages across hosts
-  hyprland.nix     # Wayland compositor, Pipewire audio, greetd login (desktop.hyprland.enable)
+  desktop/
+    hyprland.nix   # Wayland compositor, Pipewire audio, greetd/tuigreet login (desktop.hyprland.enable)
   user/
     default.nix    # Primary user configuration (user.enable)
   drivers/
     amd-cpu.nix    # AMD microcode updates (drivers.amdCpu.enable)
-    nvidia.nix     # NVIDIA closed-source driver (drivers.nvidia.enable)
+    nvidia.nix     # NVIDIA driver, modesetting, hardware graphics (drivers.nvidia.enable)
   network/
     firewall.nix   # nftables firewall, SSH restricted to trusted subnets (network.firewall.enable)
   security/
@@ -51,6 +52,7 @@ modules/
   os/
     locale.nix     # Timezone (Europe/Amsterdam), keyboard (us-intl)
     lanzaboote.nix # Secure Boot module wrapping upstream lanzaboote (os.secureBoot.enable)
+    wayland.nix    # NVIDIA Wayland env vars: GBM, LIBVA, OZONE_WL (os.wayland.enable)
 ```
 
 ## Host Configuration Structure
