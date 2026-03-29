@@ -29,7 +29,7 @@ in
       enable = true;
       settings = {
         default_session = {
-          command = "${pkgs.tuigreet}/bin/tuigreet --time --user ${config.user.name} --cmd Hyprland";
+          command = "${pkgs.tuigreet}/bin/tuigreet --time --remember --cmd Hyprland";
           user = "greeter";
         };
       };
