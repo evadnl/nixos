@@ -31,11 +31,14 @@ flake.nix          # Inputs: nixpkgs (unstable), disko, lanzaboote, sops-nix, ho
 secrets.yaml       # SOPS-encrypted secrets (see Secret Management below)
 .sops.yaml         # SOPS key configuration
 hosts/
-  <host>/          # Hardware config + host-specific options
+  <host>/
+    configuration.nix        # NixOS system config
+    home-configuration.nix   # Home-manager app selection for this host
 modules/
   common.nix       # Shared packages across hosts
   home/
-    default.nix    # Base home-manager setup — included by every host
+    default.nix    # NixOS module: wires home-manager into the system for each host
+    base.nix       # Pure HM module: stateVersion, home-manager CLI
     apps/
       browsers/    # Browser app modules (e.g. firefox.nix)
       editors/     # Editor app modules (e.g. vscode.nix)
@@ -209,79 +212,78 @@ When `user.sshPrivateKey.enable = true`, the secret `ssh_private_key` from `secr
 
 ## Home Manager
 
-User applications are managed with [home-manager](https://github.com/nix-community/home-manager), integrated as a NixOS module. This keeps user-level software (browsers, editors, dotfiles) separate from system packages.
+User applications are managed with [home-manager](https://github.com/nix-community/home-manager), keeping user-level software (browsers, editors, dotfiles) separate from system packages.
 
 ### Structure
 
+Each host has its own home-manager config file alongside its NixOS config:
+
 ```
+hosts/
+  ares/
+    configuration.nix        # NixOS system config
+    home-configuration.nix   # Home-manager config for this host
 modules/home/
-  default.nix          # Base setup — must be included by every host
+  default.nix                # NixOS module: wires home-manager into the system
+  base.nix                   # Pure HM module: stateVersion, home-manager CLI
   apps/
     browsers/
-      firefox.nix
+      firefox.nix            # Pure HM module
     editors/
-      vscode.nix
+      vscode.nix             # Pure HM module
 ```
 
-Each file under `apps/` is a self-contained NixOS module. Including it in a host's module list in `flake.nix` installs that app for the primary user on that host.
+`hosts/<host>/home-configuration.nix` is the single place to manage which apps a host gets. It imports from `modules/home/apps/` as needed.
 
-### Adding an existing app to a host
+### Adding an app to a host
 
-Open `flake.nix` and add the app module to the host's `modules` list:
+Edit the host's `home-configuration.nix` and add the import:
 
 ```nix
-nixosConfigurations.ares = nixpkgs.lib.nixosSystem {
-  modules = [
-    # ...
-    ./modules/home/apps/browsers/firefox.nix
+{ ... }:
+
+{
+  imports = [
+    ../../modules/home/base.nix
+    ../../modules/home/apps/browsers/firefox.nix
+    ../../modules/home/apps/editors/vscode.nix  # ← add this
   ];
-};
-```
-
-Then rebuild:
-
-```bash
-just switch ares
+}
 ```
 
 ### Creating a new app module
 
-1. Create a file under `modules/home/apps/<category>/<app>.nix`:
+Create a file under `modules/home/apps/<category>/<app>.nix`. These are pure home-manager modules — no NixOS wrapper needed:
 
 ```nix
-{ config, ... }:
+{ ... }:
 
 {
-  home-manager.users.${config.user.name} = {
-    programs.<app>.enable = true;
-  };
+  programs.<app>.enable = true;
 }
 ```
 
-2. Add it to the relevant host(s) in `flake.nix`.
+Then import it in the relevant host's `home-configuration.nix`.
 
 ### Configuring an app
 
-All configuration goes inside `home-manager.users.${config.user.name}` in the app's module. Home-manager's `programs.*` options cover most common apps — see the [home-manager option search](https://home-manager-options.extid.eu/) for what's available.
+All home-manager `programs.*` options are available directly in the app module. See the [home-manager option search](https://home-manager-options.extid.eu/) for what's available.
 
 **Example — Firefox with extensions:**
 
 ```nix
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
-  home-manager.users.${config.user.name} = {
-    programs.firefox = {
-      enable = true;
-      profiles.default = {
-        extensions.packages = with pkgs.firefox-addons; [
-          ublock-origin
-          bitwarden
-        ];
-        settings = {
-          "browser.startup.homepage" = "about:blank";
-          "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
-        };
+  programs.firefox = {
+    enable = true;
+    profiles.default = {
+      extensions.packages = with pkgs.firefox-addons; [
+        ublock-origin
+        bitwarden
+      ];
+      settings = {
+        "browser.startup.homepage" = "about:blank";
       };
     };
   };
@@ -291,34 +293,35 @@ All configuration goes inside `home-manager.users.${config.user.name}` in the ap
 **Example — VS Code with extensions:**
 
 ```nix
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
-  home-manager.users.${config.user.name} = {
-    programs.vscode = {
-      enable = true;
-      extensions = with pkgs.vscode-extensions; [
-        vscodevim.vim
-        ms-vscode.cpptools
-      ];
-      userSettings = {
-        "editor.fontSize" = 14;
-        "editor.formatOnSave" = true;
-      };
+  programs.vscode = {
+    enable = true;
+    extensions = with pkgs.vscode-extensions; [
+      vscodevim.vim
+    ];
+    userSettings = {
+      "editor.fontSize" = 14;
+      "editor.formatOnSave" = true;
     };
   };
 }
 ```
 
-### Applying config changes
+### Applying changes
 
-After editing any file under `modules/home/`, rebuild the host as usual:
+For a full system rebuild (required when adding new packages):
 
 ```bash
 just switch ares
 ```
 
-Home-manager runs as part of the NixOS activation — no separate `home-manager switch` step is needed.
+For home-manager config changes only (faster — no sudo, no full rebuild):
+
+```bash
+just home evad ares
+```
 
 ## Security Hardening
 

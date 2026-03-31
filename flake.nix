@@ -37,6 +37,9 @@
     {
       nixosConfigurations.nixos-vm = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
+        specialArgs = {
+          hostHomeModule = ./hosts/nixos-vm/home-configuration.nix;
+        };
         modules = [
           home-manager.nixosModules.home-manager
           sops-nix.nixosModules.sops
@@ -50,6 +53,9 @@
 
       nixosConfigurations.ares = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
+        specialArgs = {
+          hostHomeModule = ./hosts/ares/home-configuration.nix;
+        };
         modules = [
           home-manager.nixosModules.home-manager
           disko.nixosModules.disko
@@ -71,8 +77,28 @@
           ./modules/security/server.nix
           ./modules/security/workstation.nix
           ./modules/home/default.nix
-          ./modules/home/apps/browsers/firefox.nix
-          ./modules/home/apps/editors/vscode.nix
+        ];
+      };
+
+      homeConfigurations."evad@nixos-vm" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        modules = [
+          ./hosts/nixos-vm/home-configuration.nix
+          {
+            home.username = "evad";
+            home.homeDirectory = "/home/evad";
+          }
+        ];
+      };
+
+      homeConfigurations."evad@ares" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        modules = [
+          ./hosts/ares/home-configuration.nix
+          {
+            home.username = "evad";
+            home.homeDirectory = "/home/evad";
+          }
         ];
       };
     };

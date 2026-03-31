@@ -1,3 +1,7 @@
+# Apply home-manager configuration for a user@host (faster than full rebuild for HM-only changes)
+home user host:
+    home-manager switch --flake .#{{user}}@{{host}}
+
 # Apply configuration to the target host
 switch host:
     sudo nixos-rebuild switch --flake .#{{host}}

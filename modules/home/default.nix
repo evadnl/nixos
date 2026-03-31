@@ -1,11 +1,9 @@
-{ config, ... }:
+{ config, hostHomeModule, ... }:
 
 {
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    users.${config.user.name} = {
-      home.stateVersion = "26.05";
-    };
+    users.${config.user.name}.imports = [ hostHomeModule ];
   };
 }
