@@ -169,7 +169,7 @@
     $mainMod = SUPER
 
     bind = $mainMod, return, exec, GTK_IM_MODULE=simple $terminal
-    bind = $mainMod, C, killactive,
+    bind = $mainMod, W, killactive,
     bind = $mainMod, M, exec, command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch exit
     bind = $mainMod, E, exec, $fileManager
     bind = $mainMod, V, togglefloating,
