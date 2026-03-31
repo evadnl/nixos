@@ -298,5 +298,7 @@
   home.packages = with pkgs; [
     hyprlauncher
     adwaita-icon-theme
+    pavucontrol
+    playerctl
   ];
 }

@@ -25,6 +25,7 @@ in
       enable = true;
       pulse.enable = true;
       alsa.enable = true;
+      wireplumber.enable = true;
     };
 
     environment.etc."issue".text = ''
