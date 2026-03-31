@@ -1,11 +1,11 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
   services.dunst = {
     enable = true;
     iconTheme = {
       name = "Adwaita";
-      package = null;
+      package = pkgs.adwaita-icon-theme;
       size = "32x32";
     };
     settings = {
