@@ -10,12 +10,9 @@
       "catppuccin-icons"
     ];
     userSettings = {
-      theme = {
-        mode = "dark";
-        dark = "Catppuccin Mocha Blur";
-      };
       icon_theme = "Catppuccin Mocha";
-      theme" = "Catppuccin Mocha (Blur)";
+      theme = "Catppuccin Mocha (Blur)";
+      };
     };
   };
 }
