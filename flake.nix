@@ -65,6 +65,7 @@
           ./hosts/ares/configuration.nix
           ./hosts/ares/hardware-configuration.nix
           ./modules/common.nix
+          ./modules/gaming.nix
           ./modules/desktop/hyprland.nix
           ./modules/drivers/amd-cpu.nix
           ./modules/drivers/nvidia.nix

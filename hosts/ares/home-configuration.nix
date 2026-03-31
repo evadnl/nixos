@@ -10,6 +10,7 @@
     ../../modules/home/apps/terminals/ghostty.nix
     ../../modules/home/apps/social/discord.nix
     ../../modules/home/apps/media/spotify.nix
+    ../../modules/home/apps/gaming/default.nix
     ../../modules/home/apps/dev/claude-code.nix
     ../../modules/home/apps/browsers/firefox.nix
     ../../modules/home/apps/editors/vscode.nix
