@@ -49,6 +49,8 @@ in
 
     environment.systemPackages = with pkgs; [
       kitty
+      waybar
+      hyprlauncher
     ];
   };
 }
