@@ -14,14 +14,17 @@ Personal NixOS flake configuration managing two systems.
 Commands are managed with [just](https://github.com/casey/just). All rebuild commands require an explicit `HOST` argument.
 
 ```bash
-just switch ares       # Apply configuration
-just test ares         # Test without making permanent (rolls back on reboot)
-just build ares        # Build without applying (useful for checking errors)
-just update ares       # Update flake inputs and switch
-just fmt               # Format all Nix files
-just secrets           # Edit SOPS secrets
-just update-keys       # Re-encrypt secrets after adding a host to .sops.yaml
-just host-key          # Print this machine's age public key (run on the new host)
+just switch <host>          # Apply configuration
+just test <host>            # Test without making permanent (rolls back on reboot)
+just build <host>           # Build without applying (useful for checking errors)
+just update <host>          # Update flake inputs and switch
+just home <user> <host>     # Apply home-manager config only (faster, no sudo)
+just clean                  # Remove generations older than 7 days and garbage collect
+just clean <days>           # Remove generations older than N days
+just fmt                    # Format all Nix files
+just secrets                # Edit SOPS secrets
+just update-keys            # Re-encrypt secrets after adding a host to .sops.yaml
+just host-key               # Print this machine's age public key (run on the new host)
 ```
 
 ## Structure
@@ -43,7 +46,7 @@ modules/
       browsers/    # Browser app modules (e.g. firefox.nix)
       editors/     # Editor app modules (e.g. vscode.nix)
   desktop/
-    hyprland.nix   # Wayland compositor, Pipewire audio, greetd/tuigreet login (desktop.hyprland.enable)
+    hyprland.nix   # Wayland compositor (UWSM), Pipewire audio, greetd/tuigreet login (desktop.hyprland.enable)
   user/
     default.nix    # Primary user configuration (user.enable)
   drivers/
@@ -226,6 +229,10 @@ hosts/
 modules/home/
   default.nix                # NixOS module: wires home-manager into the system
   base.nix                   # Pure HM module: stateVersion, home-manager CLI
+  desktop/
+    hyprland.nix             # HM module: Hyprland config, UWSM env, packages
+    waybar.nix               # HM module: Waybar bar config
+    fonts.nix                # HM module: font packages (Font Awesome, etc.)
   apps/
     browsers/
       firefox.nix            # Pure HM module
@@ -314,13 +321,13 @@ All home-manager `programs.*` options are available directly in the app module. 
 For a full system rebuild (required when adding new packages):
 
 ```bash
-just switch ares
+just switch <host>
 ```
 
 For home-manager config changes only (faster — no sudo, no full rebuild):
 
 ```bash
-just home evad ares
+just home <user> <host>
 ```
 
 ## Security Hardening

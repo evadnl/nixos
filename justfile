@@ -5,6 +5,7 @@ home user host:
 # Apply configuration to the target host
 switch host:
     sudo nixos-rebuild switch --flake .#{{host}}
+    pkill -x hyprlauncher || true # restart so it picks up newly installed .desktop files
 
 # Test configuration without making it permanent (rolls back on reboot)
 test host:
@@ -18,6 +19,11 @@ build host:
 update host:
     nix flake update
     sudo nixos-rebuild switch --flake .#{{host}}
+
+# Remove generations older than N days and garbage collect (default: 7)
+clean days="7":
+    sudo nix-collect-garbage --delete-older-than {{days}}d
+    sudo /run/current-system/bin/switch-to-configuration boot
 
 # Format all Nix files
 fmt:
