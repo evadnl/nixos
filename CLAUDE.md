@@ -25,11 +25,14 @@ nixfmt **/*.nix
 ## Architecture
 
 ```
-flake.nix          # Inputs: nixpkgs (unstable), disko, lanzaboote, sops-nix
+flake.nix          # Inputs: nixpkgs (unstable), disko, lanzaboote, sops-nix, home-manager
 secrets.yaml       # SOPS-encrypted secrets (age)
 .sops.yaml         # age key configuration for hosts and users
 hosts/
-  <hostname>/      # Hardware config + host-specific configuration.nix
+  <hostname>/
+    configuration.nix           # Host-specific NixOS config
+    hardware-configuration.nix  # Hardware scan output
+    home-configuration.nix      # Imports home-manager modules for this host
 modules/
   common.nix       # Shared packages applied across all hosts
   desktop/         # Desktop environments (desktop.hyprland.enable)
@@ -38,6 +41,18 @@ modules/
   os/              # Locale, Lanzaboote secure boot, Wayland (os.secureBoot.enable, os.wayland.enable)
   security/        # System hardening profiles (security.hardening.profile)
   user/            # Primary user configuration (user.enable)
+  home/
+    base.nix                    # Home-manager base (stateVersion, etc.)
+    desktop/                    # fonts, hyprland, waybar
+    services/                   # dunst
+    apps/
+      browsers/firefox.nix
+      dev/claude-code.nix
+      editors/
+        vscode.nix              # programs.vscode.profiles.default.{extensions,userSettings}
+        zed.nix                 # programs.zed-editor.{extensions,userSettings}
+      social/discord.nix
+      terminals/ghostty.nix
 ```
 
 ## Adding a New Host
@@ -127,4 +142,6 @@ Set `nixpkgs.config.allowUnfree = true` on any host that requires proprietary so
 
 ## Home Manager
 
-Listed as a flake input but currently commented out — not yet wired into any host configuration.
+Wired into hosts via `modules/home/default.nix`, which injects the host's `home-configuration.nix` as `hostHomeModule`. Each host's `home-configuration.nix` imports the relevant `modules/home/**` files.
+
+**Important:** new files added to `modules/home/` must be `git add`-ed before Nix can resolve them — the flake copies only git-tracked files into the store.
