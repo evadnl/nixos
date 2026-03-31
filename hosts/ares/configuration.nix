@@ -12,6 +12,7 @@
   nixpkgs.config.allowUnfree = true;
   security.hardening.profile = "workstation";
   system.stateVersion = "26.05";
+  programs.nix-ld.enable = true;
 
 
   # ===========================================================
@@ -78,6 +79,5 @@
     curl
     htop
     fastfetch
-sbctl
   ];
 }
