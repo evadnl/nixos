@@ -1,0 +1,14 @@
+{ ... }:
+
+{
+  programs.ghostty = {
+    enable = true;
+    enableZshIntegration = true;
+    settings = {
+      theme = "Catppuccin Mocha";
+      background-opacity = 0.9;
+      background-blur = 10;
+      quick-terminal-animation-duration = 0;
+    };
+  };
+}

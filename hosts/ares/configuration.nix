@@ -78,7 +78,6 @@
     curl
     htop
     fastfetch
-    ghostty
-    sbctl
+sbctl
   ];
 }
