@@ -168,7 +168,7 @@
     # See https://wiki.hypr.land/Configuring/Keywords/
     $mainMod = SUPER
 
-    bind = $mainMod, return, exec, $terminal GTK_IM_MODULE=simple
+    bind = $mainMod, return, exec, GTK_IM_MODULE=simple $terminal
     bind = $mainMod, C, killactive,
     bind = $mainMod, M, exec, command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch exit
     bind = $mainMod, E, exec, $fileManager
