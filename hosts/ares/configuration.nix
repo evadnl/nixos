@@ -64,6 +64,23 @@
 
 
   # ===========================================================
+  # FILESYSTEMS
+  # ===========================================================
+
+  fileSystems."/mnt/games" = {
+    device = "/dev/disk/by-uuid/B47A52777A5235F8";
+    fsType = "ntfs3";
+    options = [ "uid=1000" "gid=100" "dmask=022" "fmask=133" "nofail" ];
+  };
+
+  fileSystems."/mnt/games2" = {
+    device = "/dev/disk/by-uuid/226C5C266C5BF351";
+    fsType = "ntfs3";
+    options = [ "uid=1000" "gid=100" "dmask=022" "fmask=133" "nofail" ];
+  };
+
+
+  # ===========================================================
   # SERVICES
   # ===========================================================
 
