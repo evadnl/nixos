@@ -46,6 +46,8 @@
   xdg.configFile."hypr/config/environment-variables.conf".text = ''
     env = XCURSOR_SIZE,24
     env = HYPRCURSOR_SIZE,24
+    env = XKB_DEFAULT_LAYOUT,us
+    env = XKB_DEFAULT_VARIANT,intl
   '';
 
   xdg.configFile."hypr/config/permissions.conf".text = ''
