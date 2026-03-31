@@ -12,6 +12,7 @@
     userSettings = {
       "workbench.colorTheme" = "Catppuccin Mocha";
       "workbench.iconTheme" = "catppuccin-mocha";
+      "claude.claudePath" = "${pkgs.claude-code}/bin/claude";
     };
   };
 }
