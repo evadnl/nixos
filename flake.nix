@@ -65,6 +65,7 @@
           ./hosts/ares/configuration.nix
           ./hosts/ares/hardware-configuration.nix
           ./modules/common.nix
+          ./modules/apps/1password.nix
           ./modules/gaming.nix
           ./modules/hardware/bluetooth.nix
           ./modules/desktop/hyprland.nix
