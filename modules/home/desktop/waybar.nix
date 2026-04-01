@@ -39,19 +39,22 @@
       #cpu,
       #memory,
       #network,
-      #network\.wifi,
-      #network\.ethernet,
       #pulseaudio,
       #bluetooth,
       #tray {
         padding: 0 10px;
+      }
+
+      #network {
+        padding: 0 10px;
+        min-width: 160px;
       }
     '';
     settings = [
       {
         layer = "top";
         position = "top";
-        height = 30;
+        height = 35;
         margin-top = 2;
         margin-left = 4;
         margin-right = 4;
@@ -61,8 +64,7 @@
         modules-center = [ "hyprland/window" ];
         modules-right = [
           "pulseaudio"
-          "network#wifi"
-          "network#ethernet"
+          "network"
           "cpu"
           "memory"
           "tray"
@@ -90,18 +92,12 @@
           format = "<span color=\"#a6e3a1\"></span> {}%";
           interval = 10;
         };
-        "network#wifi" = {
-          interface = "wl*";
-          format-wifi = "<span color=\"#89b4fa\"></span> {signalStrength}% ↑{bandwidthUpBytes} ↓{bandwidthDownBytes}";
-          format-disconnected = "";
+        network = {
+          format-wifi = "<span color=\"#89b4fa\"></span> {essid} {signalStrength}% ↑{bandwidthUpBits} ↓{bandwidthDownBits}";
+          format-ethernet = "<span color=\"#89b4fa\"></span> ↑{bandwidthUpBits} ↓{bandwidthDownBits}";
+          format-disconnected = "<span color=\"#6c7086\">Disconnected</span>";
           tooltip-format = "{ifname}: {ipaddr}/{cidr}";
-          interval = 2;
-        };
-        "network#ethernet" = {
-          interface = "en*";
-          format-ethernet = "<span color=\"#89b4fa\"></span> ↑{bandwidthUpBytes} ↓{bandwidthDownBytes}";
-          format-disconnected = "";
-          tooltip-format = "{ifname}: {ipaddr}/{cidr}";
+          tooltip-format-wifi = "{ifname}: {ipaddr}/{cidr}\nESSID: {essid}\nSignal: {signalStrength}%\nFrequency: {frequency}GHz";
           interval = 2;
         };
         pulseaudio = {
