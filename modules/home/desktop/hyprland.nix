@@ -181,6 +181,7 @@
     bind = $mainMod, return, exec, GTK_IM_MODULE=simple $terminal
     bind = , Print, exec, grim -g "$(slurp)" - | wl-copy
     bind = $mainMod, W, killactive,
+    bind = $mainMod ALT, W, exec, swww img $(find ~/Pictures/wallpapers -type f | shuf -n 1) --transition-type random
     bind = $mainMod, M, exec, command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch exit
     bind = $mainMod, E, exec, $fileManager
     bind = $mainMod, V, togglefloating,
