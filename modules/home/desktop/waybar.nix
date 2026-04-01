@@ -24,6 +24,9 @@
         "hyprland/workspaces" = {
           format = "{id}";
           active-only = false;
+          persistent-workspaces = {
+            "*" = [ 1 2 3 4 ];
+          };
         };
         "hyprland/window" = {
           max-length = 60;
