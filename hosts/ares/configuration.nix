@@ -23,6 +23,7 @@
   os.wayland.enable = true;
   drivers.nvidia.enable = true;
   drivers.amdCpu.enable = true;
+  bluetooth.enable = true;
 
 
   # ===========================================================
