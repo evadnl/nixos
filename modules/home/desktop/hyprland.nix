@@ -184,6 +184,12 @@
     bind = $mainMod, up, movefocus, u
     bind = $mainMod, down, movefocus, d
 
+    # Resize active window with mainMod + ALT + arrow keys
+    binde = $mainMod ALT, right, resizeactive, 30 0
+    binde = $mainMod ALT, left, resizeactive, -30 0
+    binde = $mainMod ALT, up, resizeactive, 0 -30
+    binde = $mainMod ALT, down, resizeactive, 0 30
+
     # Switch workspaces with mainMod + [0-9]
     bind = $mainMod, 1, workspace, 1
     bind = $mainMod, 2, workspace, 2
