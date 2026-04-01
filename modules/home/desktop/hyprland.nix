@@ -290,8 +290,6 @@
   '';
 
   xdg.configFile."hypr/config/rules.conf".text = ''
-    layerrule = noblur, swww
-
     # See https://wiki.hypr.land/Configuring/Window-Rules/ for more
     # See https://wiki.hypr.land/Configuring/Workspace-Rules/ for workspace rules
 
