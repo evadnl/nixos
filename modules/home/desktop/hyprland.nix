@@ -341,8 +341,8 @@
         match:class = ^1Password$
         match:float = true
 
-        size = 400 700
         center = true
+        rounding = 0
     }
   '';
 
