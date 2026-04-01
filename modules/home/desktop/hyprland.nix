@@ -40,6 +40,7 @@
   '';
 
   xdg.configFile."hypr/config/autostart.conf".text = ''
+    exec-once = eval $(gnome-keyring-daemon --start --components=secrets,pkcs11)
     exec-once = waybar
     exec-once = blueman-applet
     exec-once = swww-daemon
@@ -333,6 +334,15 @@
         match:class = ^discord$
 
         workspace = 3
+    }
+
+    windowrule {
+        name = 1password-dialogs
+        match:class = ^1Password$
+        match:float = true
+
+        size = 400 500
+        center = true
     }
   '';
 
