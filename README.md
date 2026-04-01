@@ -47,6 +47,11 @@ modules/
       editors/     # Editor app modules (e.g. vscode.nix)
   desktop/
     hyprland.nix   # Wayland compositor (UWSM), Pipewire audio, greetd/tuigreet login (desktop.hyprland.enable)
+  apps/
+    1password.nix  # 1Password desktop app
+  hardware/
+    bluetooth.nix  # Bluetooth support (bluetooth.enable)
+  gaming.nix       # Steam, Gamemode, MangoHud (gaming.enable)
   user/
     default.nix    # Primary user configuration (user.enable)
   drivers/
@@ -107,6 +112,20 @@ Each host's `configuration.nix` follows a consistent section layout using commen
 ```
 
 Not every section is required — omit sections that don't apply to the host (e.g. no DESKTOP on a server, no HARDWARE if no special drivers are needed).
+
+## Desktop Environment
+
+The desktop runs on Hyprland (Wayland compositor) with the following components:
+
+| Component | Purpose |
+|-----------|---------|
+| **Waybar** | Status bar |
+| **Hyprlock** | Lock screen |
+| **Hypridle** | Idle management and auto-locking |
+| **Fuzzel** | Application launcher |
+| **Dunst** | Notification daemon |
+| **swww** | Wallpaper daemon |
+| **Ghostty** | Terminal emulator |
 
 ## Updating Packages
 
@@ -230,14 +249,33 @@ modules/home/
   default.nix                # NixOS module: wires home-manager into the system
   base.nix                   # Pure HM module: stateVersion, home-manager CLI
   desktop/
-    hyprland.nix             # HM module: Hyprland config, UWSM env, packages
-    waybar.nix               # HM module: Waybar bar config
-    fonts.nix                # HM module: font packages (Font Awesome, etc.)
+    hyprland.nix             # HM module: Hyprland config, UWSM env, autostart, keybinds
+    waybar.nix               # HM module: Waybar status bar with icons, network/cpu/mem/volume
+    hyprlock.nix             # HM module: Lock screen with blurred wallpaper
+    hypridle.nix             # HM module: Auto-lock after 5min, DPMS off after 10min
+    fonts.nix                # HM module: Font packages
+    fuzzel.nix               # HM module: Application launcher
+    gtk.nix                  # HM module: GTK theming
   apps/
     browsers/
       firefox.nix            # Pure HM module
     editors/
       vscode.nix             # Pure HM module
+      zed.nix                # Pure HM module
+    social/
+      discord.nix            # Pure HM module
+    dev/
+      claude-code.nix        # Pure HM module
+    terminals/
+      ghostty.nix            # Pure HM module
+    media/
+      spotify.nix            # Pure HM module
+  services/
+    dunst.nix                # HM module: notification daemon
+  shell/
+    zsh.nix                  # HM module: Zsh shell config
+    starship.nix             # HM module: Starship prompt
+    ssh.nix                  # HM module: SSH client config
 ```
 
 `hosts/<host>/home-configuration.nix` is the single place to manage which apps a host gets. It imports from `modules/home/apps/` as needed.
