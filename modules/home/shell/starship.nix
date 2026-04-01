@@ -84,7 +84,7 @@
         pyenv_version_name = true;
       };
 
-      "palettes.catppuccin_mocha" = {
+      palettes.catppuccin_mocha = {
         rosewater = "#f5e0dc";
         flamingo = "#f2cdcd";
         pink = "#f5c2e7";

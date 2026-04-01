@@ -36,20 +36,22 @@
       zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
     '';
 
-    initContent = ''
-      abbr "flushdns"="sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder"
-      abbr "k"="kubectl"
-      abbr "kdp"="kubectl describe"
-      abbr "kex"="kubectl exec -it"
-      abbr "kgn"="kubectl get nodes"
-      abbr "kgp"="kubectl get pods"
-      abbr "ksec"="kubectl get secrets"
-      abbr "tf"="terraform"
-      abbr "tfa"="terraform apply"
-      abbr "tfp"="terraform plan"
-      abbr "awsp"="export AWS_PROFILE=%"
-    '';
   };
+
+  # Managed abbreviations file — zsh-abbr loads this on startup
+  home.file.".local/share/zsh/abbreviations".text = ''
+    abbr "flushdns"="sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder"
+    abbr "k"="kubectl"
+    abbr "kdp"="kubectl describe"
+    abbr "kex"="kubectl exec -it"
+    abbr "kgn"="kubectl get nodes"
+    abbr "kgp"="kubectl get pods"
+    abbr "ksec"="kubectl get secrets"
+    abbr "tf"="terraform"
+    abbr "tfa"="terraform apply"
+    abbr "tfp"="terraform plan"
+    abbr "awsp"="export AWS_PROFILE=%"
+  '';
 
   programs.zoxide = {
     enable = true;
