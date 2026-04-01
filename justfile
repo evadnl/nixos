@@ -5,7 +5,6 @@ home user host:
 # Apply configuration to the target host
 switch host:
     sudo nixos-rebuild switch --flake .#{{host}}
-    pkill -x hyprlauncher || true # restart so it picks up newly installed .desktop files
 
 # Test configuration without making it permanent (rolls back on reboot)
 test host:
