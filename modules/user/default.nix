@@ -71,6 +71,10 @@ in
         initialPassword = cfg.initialPassword;
       };
 
+    systemd.tmpfiles.rules = lib.mkIf cfg.sshPrivateKey.enable [
+      "d /home/${cfg.name}/.ssh 0700 ${cfg.name} users -"
+    ];
+
     sops.secrets = lib.mkIf cfg.sshPrivateKey.enable {
       ssh_private_key = {
         owner = cfg.name;
