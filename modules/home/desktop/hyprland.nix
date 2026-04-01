@@ -43,6 +43,8 @@
     exec-once = waybar
     exec-once = blueman-applet
     exec-once = swww-daemon
+    exec-once = discord
+    exec-once = 1password --silent
     exec-once = ${pkgs.writeShellScript "wallpaper-rotate" ''
       WALLPAPER_DIR="$HOME/Pictures/wallpapers"
       TRANSITIONS=(left right top bottom wipe grow outer)
@@ -270,7 +272,7 @@
         kb_layout = us
         kb_variant = intl
         kb_model =
-        kb_options =
+        kb_options = altwin:swap_lalt_lwin
         kb_rules =
 
         follow_mouse = 1
@@ -322,6 +324,13 @@
 
         move = 20 monitor_h-120
         float = yes
+    }
+
+    windowrule {
+        name = discord-workspace
+        match:class = ^discord$
+
+        workspace = 3
     }
   '';
 
