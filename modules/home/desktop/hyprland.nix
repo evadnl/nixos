@@ -45,10 +45,12 @@
     exec-once = swww-daemon
     exec-once = ${pkgs.writeShellScript "wallpaper-rotate" ''
       WALLPAPER_DIR="$HOME/Pictures/wallpapers"
+      TRANSITIONS=(left right top bottom wipe grow outer)
       while true; do
         wallpaper=$(find "$WALLPAPER_DIR" -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" -o -name "*.gif" \) | shuf -n 1)
-        swww img "$wallpaper" --transition-type random
-        sleep $((RANDOM % 901 + 900))
+        transition=''${TRANSITIONS[$RANDOM % ''${#TRANSITIONS[@]}]}
+        swww img "$wallpaper" --transition-type "$transition"
+        sleep 900
       done
     ''}
   '';
