@@ -10,23 +10,26 @@
         height = 30;
         modules-left = [
           "hyprland/workspaces"
-          "hyprland/window"
         ];
-        modules-center = [ "clock" ];
+        modules-center = [ "hyprland/window" ];
         modules-right = [
           "pulseaudio"
           "network"
           "cpu"
           "memory"
+          "bluetooth"
           "tray"
+          "clock"
         ];
-        "hyprland/workspaces" = { };
+        "hyprland/workspaces" = {
+          format = "{id}";
+          active-only = false;
+        };
         "hyprland/window" = {
           max-length = 60;
         };
         clock = {
-          format = "{:%H:%M}";
-          format-alt = "{:%Y-%m-%d %H:%M:%S}";
+          format = "{:%a %b %e %H:%M}";
           tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
         };
         cpu = {
@@ -47,6 +50,13 @@
           format = "VOL {volume}%";
           format-muted = "MUTED";
           on-click = "pavucontrol";
+        };
+        bluetooth = {
+          format = "BT";
+          format-connected = "BT {device_alias}";
+          format-disabled = "";
+          on-click = "blueman-manager";
+          tooltip-format = "{controller_alias}\n{num_connections} connected";
         };
         tray = {
           spacing = 10;
