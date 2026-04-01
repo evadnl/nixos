@@ -42,6 +42,15 @@
   xdg.configFile."hypr/config/autostart.conf".text = ''
     exec-once = waybar
     exec-once = blueman-applet
+    exec-once = swww-daemon
+    exec-once = ${pkgs.writeShellScript "wallpaper-rotate" ''
+      WALLPAPER_DIR="$HOME/Pictures/wallpapers"
+      while true; do
+        wallpaper=$(find "$WALLPAPER_DIR" -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" -o -name "*.gif" \) | shuf -n 1)
+        swww img "$wallpaper" --transition-type random
+        sleep $((RANDOM % 901 + 900))
+      done
+    ''}
   '';
 
   xdg.configFile."hypr/config/environment-variables.conf".text = ''
@@ -318,6 +327,7 @@
     adwaita-icon-theme
     pavucontrol
     playerctl
+    swww
     grim
     slurp
     wl-clipboard
