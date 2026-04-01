@@ -170,6 +170,7 @@
     $mainMod = SUPER
 
     bind = $mainMod, return, exec, GTK_IM_MODULE=simple $terminal
+    bind = , Print, exec, grim -g "$(slurp)" - | wl-copy
     bind = $mainMod, W, killactive,
     bind = $mainMod, M, exec, command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch exit
     bind = $mainMod, E, exec, $fileManager
@@ -178,11 +179,21 @@
     bind = $mainMod, P, pseudo, # dwindle
     bind = $mainMod, J, layoutmsg, togglesplit # dwindle
 
+    # Window management
+    bind = $mainMod, F, fullscreen, 0
+    bind = ALT, Tab, cyclenext,
+
     # Move focus with mainMod + arrow keys
     bind = $mainMod, left, movefocus, l
     bind = $mainMod, right, movefocus, r
     bind = $mainMod, up, movefocus, u
     bind = $mainMod, down, movefocus, d
+
+    # Move windows with mainMod + SHIFT + arrow keys
+    bind = $mainMod SHIFT, left, movewindow, l
+    bind = $mainMod SHIFT, right, movewindow, r
+    bind = $mainMod SHIFT, up, movewindow, u
+    bind = $mainMod SHIFT, down, movewindow, d
 
     # Resize active window with mainMod + ALT + arrow keys
     binde = $mainMod ALT, right, resizeactive, 30 0
@@ -307,5 +318,8 @@
     adwaita-icon-theme
     pavucontrol
     playerctl
+    grim
+    slurp
+    wl-clipboard
   ];
 }
