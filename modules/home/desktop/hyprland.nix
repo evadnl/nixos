@@ -41,6 +41,7 @@
 
   xdg.configFile."hypr/config/autostart.conf".text = ''
     exec-once = waybar
+    exec-once = blueman-applet
   '';
 
   xdg.configFile."hypr/config/environment-variables.conf".text = ''
