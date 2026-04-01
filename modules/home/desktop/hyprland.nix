@@ -36,7 +36,7 @@
   xdg.configFile."hypr/config/programs.conf".text = ''
     $terminal = ghostty
     $fileManager = dolphin
-    $menu = hyprlauncher
+    $menu = fuzzel
   '';
 
   xdg.configFile."hypr/config/autostart.conf".text = ''
@@ -323,7 +323,6 @@
   '';
 
   home.packages = with pkgs; [
-    hyprlauncher
     adwaita-icon-theme
     pavucontrol
     playerctl
