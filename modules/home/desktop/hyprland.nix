@@ -53,7 +53,6 @@
         wallpaper=$(find "$WALLPAPER_DIR" -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" -o -name "*.gif" \) | shuf -n 1)
         transition=''${TRANSITIONS[$RANDOM % ''${#TRANSITIONS[@]}]}
         swww img "$wallpaper" --transition-type "$transition"
-        cp "$wallpaper" "$HOME/.cache/current-wallpaper"
         sleep 900
       done
     ''}
@@ -64,6 +63,8 @@
     env = HYPRCURSOR_SIZE,24
     env = XKB_DEFAULT_LAYOUT,us
     env = XKB_DEFAULT_VARIANT,intl
+    env = GTK_IM_MODULE,simple
+    env = QT_IM_MODULE,simple
   '';
 
   xdg.configFile."hypr/config/permissions.conf".text = ''
@@ -184,7 +185,7 @@
     # See https://wiki.hypr.land/Configuring/Keywords/
     $mainMod = SUPER
 
-    bind = $mainMod, return, exec, GTK_IM_MODULE=simple $terminal
+    bind = $mainMod, return, exec, $terminal
     bind = , Print, exec, grim -g "$(slurp)" - | wl-copy
     bind = $mainMod, W, killactive,
     bind = $mainMod ALT, W, exec, swww img $(find ~/Pictures/wallpapers -type f | shuf -n 1) --transition-type random
@@ -348,6 +349,7 @@
 
   home.packages = with pkgs; [
     adwaita-icon-theme
+    hyprshutdown
     pavucontrol
     playerctl
     swww
