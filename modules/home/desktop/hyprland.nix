@@ -35,7 +35,7 @@
 
   xdg.configFile."hypr/config/programs.conf".text = ''
     $terminal = ghostty
-    $fileManager = dolphin
+    $fileManager = nautilus
     $menu = fuzzel
   '';
 
