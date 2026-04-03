@@ -69,17 +69,30 @@
   # FILESYSTEMS
   # ===========================================================
 
-  fileSystems."/mnt/games" = {
-    device = "/dev/disk/by-uuid/B47A52777A5235F8";
-    fsType = "ntfs3";
-    options = [ "uid=1000" "gid=100" "dmask=022" "fmask=133" "nofail" ];
-  };
+fileSystems."/mnt/games1" = {
+  device = "/dev/disk/by-uuid/4d0035c0-704f-4752-9694-498c956a0c1b";
+  fsType = "btrfs";
+  options = [ 
+    "defaults" 
+    "noatime" 
+    "compress=zstd" 
+    "ssd" 
+    "discard=async" 
+  ];
+};
 
-  fileSystems."/mnt/games2" = {
-    device = "/dev/disk/by-uuid/226C5C266C5BF351";
-    fsType = "ntfs3";
-    options = [ "uid=1000" "gid=100" "dmask=022" "fmask=133" "nofail" ];
-  };
+
+  # fileSystems."/mnt/games" = {
+  #   device = "/dev/disk/by-uuid/B47A52777A5235F8";
+  #   fsType = "ntfs3";
+  #   options = [ "uid=1000" "gid=100" "dmask=022" "fmask=133" "nofail" ];
+  # };
+
+  # fileSystems."/mnt/games2" = {
+  #   device = "/dev/disk/by-uuid/226C5C266C5BF351";
+  #   fsType = "ntfs3";
+  #   options = [ "uid=1000" "gid=100" "dmask=022" "fmask=133" "nofail" ];
+  # };
 
 
   # ===========================================================
@@ -87,6 +100,8 @@
   # ===========================================================
 
   services.openssh.enable = true;
+  services.gvfs.enable = true;
+  services.udisks2.enable = true;
 
 
   # ===========================================================
