@@ -8,6 +8,7 @@
         font-family: "JetBrainsMono Nerd Font Propo";
         font-weight: bold;
         font-size: 12px;
+        color: #cdd6f4;
       }
 
       window#waybar {
@@ -63,11 +64,11 @@
         ];
         modules-center = [ "hyprland/window" ];
         modules-right = [
+          "tray"
           "pulseaudio"
           "network"
           "cpu"
           "memory"
-          "tray"
           "clock"
         ];
         "hyprland/workspaces" = {
