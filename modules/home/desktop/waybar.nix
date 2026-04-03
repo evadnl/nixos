@@ -42,7 +42,8 @@
       #network,
       #pulseaudio,
       #bluetooth,
-      #tray {
+      #tray,
+      #mpris {
         padding: 0 10px;
       }
 
@@ -61,6 +62,7 @@
         margin-right = 4;
         modules-left = [
           "hyprland/workspaces"
+          "mpris"
         ];
         modules-center = [ "hyprland/window" ];
         modules-right = [
@@ -105,6 +107,10 @@
           format = "<span color=\"#f9e2af\"></span> {volume}%";
           format-muted = "<span color=\"#6c7086\"></span>";
           on-click = "pavucontrol";
+        };
+        mpris = {
+          format = "<span color=\"#a6e3a1\">󰝚</span> {title} - {artist}";
+          format-paused = "<span color=\"#6c7086\"></span> {title} - {artist}";
         };
         tray = {
           spacing = 10;
