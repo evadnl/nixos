@@ -62,11 +62,12 @@
         margin-right = 4;
         modules-left = [
           "hyprland/workspaces"
-          "mpris"
+          "hyprland/window"
         ];
-        modules-center = [ "hyprland/window" ];
+        modules-center = [  ];
         modules-right = [
           "tray"
+          "mpris"
           "pulseaudio"
           "network"
           "cpu"

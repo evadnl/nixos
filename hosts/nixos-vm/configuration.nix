@@ -19,6 +19,7 @@
   # DESKTOP
   # ===========================================================
 
+  desktop.sddm.enable = true;
   desktop.hyprland.enable = true;
 
 

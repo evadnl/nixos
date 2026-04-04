@@ -172,6 +172,9 @@
     # See https://wiki.hypr.land/Configuring/Master-Layout/ for more
     master {
         new_status = master
+        mfact = 0.5
+        orientation = center
+        slave_count_for_center_master = 0
     }
 
     # https://wiki.hypr.land/Configuring/Variables/#misc
@@ -281,7 +284,7 @@
 
         follow_mouse = 1
 
-        sensitivity = 0 # -1.0 - 1.0, 0 means no modification.
+        sensitivity = -0.5 # -1.0 - 1.0, 0 means no modification.
 
         touchpad {
             natural_scroll = false
@@ -346,6 +349,14 @@
         rounding = 0
     }
   '';
+
+  home.pointerCursor = {
+    name = "catppuccin-mocha-dark-cursors";
+    package = pkgs.catppuccin-cursors.mochaDark;
+    size = 24;
+    gtk.enable = true;
+    hyprcursor.enable = true;
+  };
 
   home.packages = with pkgs; [
     adwaita-icon-theme

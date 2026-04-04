@@ -5,17 +5,16 @@
 }:
 
 let
-  cfg = config.desktop.hyprland;
+  cfg = config.desktop.niri;
 in
 {
-  options.desktop.hyprland = {
-    enable = lib.mkEnableOption "Hyprland desktop environment";
+  options.desktop.niri = {
+    enable = lib.mkEnableOption "Niri desktop environment";
   };
 
   config = lib.mkIf cfg.enable {
-    programs.hyprland = {
+    programs.niri = {
       enable = true;
-      withUWSM = true;
     };
 
     security.rtkit.enable = true;
