@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 
@@ -15,6 +16,8 @@ in
   config = lib.mkIf cfg.enable {
     programs.niri.enable = true;
     programs.xwayland.enable = true;
+
+    environment.systemPackages = [ pkgs.xwayland-satellite ];
 
     security.rtkit.enable = true;
 

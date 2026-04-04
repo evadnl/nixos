@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   xdg.configFile."niri/config.kdl".text = ''
@@ -126,11 +126,13 @@
 
     // Environment variables
     environment {
+        XCURSOR_THEME "catppuccin-mocha-dark-cursors"
         XCURSOR_SIZE "24"
         XKB_DEFAULT_LAYOUT "us"
         XKB_DEFAULT_VARIANT "intl"
         GTK_IM_MODULE "simple"
         QT_IM_MODULE "simple"
+        QT_QPA_PLATFORM "wayland"
     }
 
     // Cursor
