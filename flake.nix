@@ -44,7 +44,7 @@
           home-manager.nixosModules.home-manager
           sops-nix.nixosModules.sops
           ./hosts/nixos-vm/configuration.nix
-          ./modules/desktop/sddm.nix
+          ./modules/desktop/regreet.nix
           ./modules/desktop/hyprland.nix
           ./modules/common.nix
           ./modules/user/default.nix
@@ -69,7 +69,7 @@
           ./modules/apps/1password.nix
           ./modules/gaming.nix
           ./modules/hardware/bluetooth.nix
-          ./modules/desktop/sddm.nix
+          ./modules/desktop/regreet.nix
           ./modules/desktop/hyprland.nix
           ./modules/desktop/niri.nix
           ./modules/drivers/amd-cpu.nix

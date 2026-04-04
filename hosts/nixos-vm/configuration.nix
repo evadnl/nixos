@@ -19,7 +19,7 @@
   # DESKTOP
   # ===========================================================
 
-  desktop.sddm.enable = true;
+  desktop.regreet.enable = true;
   desktop.hyprland.enable = true;
 
 

@@ -103,7 +103,7 @@
     spawn-at-startup "waybar"
     spawn-at-startup "blueman-applet"
     spawn-at-startup "swww-daemon"
-    spawn-at-startup "discord"
+    spawn-at-startup "discord" "--ozone-platform=x11"
     spawn-at-startup "1password" "--silent"
     spawn-at-startup "${pkgs.writeShellScript "wallpaper-rotate" ''
       WALLPAPER_DIR="$HOME/Pictures/wallpapers"
@@ -323,13 +323,6 @@
         Mod+Shift+P { power-off-monitors; }
     }
   '';
-
-  home.pointerCursor = {
-    name = "catppuccin-mocha-dark-cursors";
-    package = pkgs.catppuccin-cursors.mochaDark;
-    size = 24;
-    gtk.enable = true;
-  };
 
   home.packages = with pkgs; [
     adwaita-icon-theme

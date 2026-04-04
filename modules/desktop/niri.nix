@@ -13,9 +13,8 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    programs.niri = {
-      enable = true;
-    };
+    programs.niri.enable = true;
+    programs.xwayland.enable = true;
 
     security.rtkit.enable = true;
 

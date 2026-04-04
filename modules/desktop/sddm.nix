@@ -31,14 +31,20 @@ in
       wayland.compositor = "kwin";
       theme = "${sddm-theme}/share/sddm/themes/catppuccin-mocha-mauve";
       package = pkgs.kdePackages.sddm;
-      settings.Theme = {
-        CursorTheme = "catppuccin-mocha-dark-cursors";
-        CursorSize = 24;
+      settings = {
+        Theme = {
+          CursorTheme = "catppuccin-mocha-dark-cursors";
+          CursorSize = 24;
+        };
+        General = {
+          InputMethod = "";
+        };
       };
-      extraPackages = [ pkgs.catppuccin-cursors.mochaDark ];
+
+      extraPackages = [ pkgs.catppuccin-cursors.mochaDark pkgs.kdePackages.qtsvg pkgs.kdePackages.qt5compat pkgs.kdePackages.qtwayland ];
     };
 
-    environment.systemPackages = [ sddm-theme ];
+    environment.systemPackages = [ sddm-theme pkgs.catppuccin-cursors ];
 
     # Copy a random wallpaper to a system-wide path readable by SDDM
     systemd.services.sddm-wallpaper-sync = {

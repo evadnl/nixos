@@ -350,13 +350,7 @@
     }
   '';
 
-  home.pointerCursor = {
-    name = "catppuccin-mocha-dark-cursors";
-    package = pkgs.catppuccin-cursors.mochaDark;
-    size = 24;
-    gtk.enable = true;
-    hyprcursor.enable = true;
-  };
+  home.pointerCursor.hyprcursor.enable = true;
 
   home.packages = with pkgs; [
     adwaita-icon-theme
