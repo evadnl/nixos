@@ -27,7 +27,8 @@
         border-bottom: 2px solid transparent;
       }
 
-      #workspaces button.active {
+      #workspaces button.active,
+      #workspaces button.focused {
         border-bottom: 2px solid #b4befe;
         background-color: rgba(49, 50, 68, 0.8);
       }
@@ -62,7 +63,9 @@
         margin-right = 4;
         modules-left = [
           "hyprland/workspaces"
+          "niri/workspaces"
           "hyprland/window"
+          "niri/window"
         ];
         modules-center = [  ];
         modules-right = [
@@ -82,6 +85,12 @@
           };
         };
         "hyprland/window" = {
+          max-length = 60;
+        };
+        "niri/workspaces" = {
+          format = "{index}";
+        };
+        "niri/window" = {
           max-length = 60;
         };
         clock = {

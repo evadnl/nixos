@@ -56,7 +56,7 @@
     layout {
         gaps 16
 
-        center-focused-column "never"
+        center-focused-column "always"
 
         preset-column-widths {
             proportion 0.33333
