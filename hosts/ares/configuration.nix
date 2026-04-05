@@ -32,7 +32,7 @@
   # ===========================================================
 
   desktop.regreet.enable = true;
-  desktop.hyprland.enable = true;
+  # desktop.hyprland.enable = true;
   desktop.niri.enable = true;
   gaming.enable = true;
 
