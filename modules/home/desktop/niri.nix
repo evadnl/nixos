@@ -311,7 +311,7 @@
         Mod+V       { toggle-window-floating; }
         Mod+Shift+V { switch-focus-between-floating-and-tiling; }
 
-        Mod+W { toggle-column-tabbed-display; }
+        Mod+D { toggle-column-tabbed-display; }
 
         Print { screenshot; }
         Ctrl+Print { screenshot-screen; }
