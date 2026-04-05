@@ -23,6 +23,8 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    catppuccin.url = "github:catppuccin/nix";
   };
 
   outputs =
@@ -32,6 +34,7 @@
       lanzaboote,
       sops-nix,
       home-manager,
+      catppuccin,
       ...
     }:
     {
@@ -43,6 +46,7 @@
         modules = [
           home-manager.nixosModules.home-manager
           sops-nix.nixosModules.sops
+          catppuccin.nixosModules.catppuccin
           ./hosts/nixos-vm/configuration.nix
           ./modules/desktop/regreet.nix
           ./modules/desktop/hyprland.nix
@@ -59,6 +63,7 @@
         };
         modules = [
           home-manager.nixosModules.home-manager
+          catppuccin.nixosModules.catppuccin
           disko.nixosModules.disko
           lanzaboote.nixosModules.lanzaboote
           sops-nix.nixosModules.sops

@@ -1,8 +1,10 @@
 { ... }:
 
 {
-  programs.discord = {
+  programs.vesktop.enable = true;
+
+  catppuccin.vesktop = {
     enable = true;
-    settings.SKIP_HOST_UPDATE = true;
+    flavor = "mocha";
   };
 }
