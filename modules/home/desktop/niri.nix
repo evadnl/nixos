@@ -17,7 +17,6 @@
                 variant "intl"
                 options "altwin:swap_lalt_lwin"
             }
-
             numlock
         }
 
@@ -56,12 +55,13 @@
     layout {
         gaps 16
 
-        center-focused-column "always"
+        center-focused-column "never"
+        always-center-single-column 
 
         preset-column-widths {
-            proportion 0.33333
             proportion 0.5
             proportion 0.66667
+            proportion 1.0
         }
 
         // preset-window-heights { }
@@ -103,7 +103,7 @@
     spawn-at-startup "waybar"
     spawn-at-startup "blueman-applet"
     spawn-at-startup "swww-daemon"
-    spawn-at-startup "discord" "--ozone-platform=x11"
+    spawn-at-startup "discord"
     spawn-at-startup "1password" "--silent"
     spawn-at-startup "${pkgs.writeShellScript "wallpaper-rotate" ''
       WALLPAPER_DIR="$HOME/Pictures/wallpapers"
@@ -171,8 +171,8 @@
     binds {
         Mod+Shift+Slash { show-hotkey-overlay; }
 
-        Mod+T hotkey-overlay-title="Open a Terminal: ghostty" { spawn "ghostty"; }
-        Mod+D hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
+        Mod+Return hotkey-overlay-title="Open a Terminal: ghostty" { spawn "ghostty"; }
+        Mod+space hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
         Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
 
         Super+Alt+S allow-when-locked=true hotkey-overlay-title=null { spawn-sh "pkill orca || exec orca"; }
@@ -192,7 +192,7 @@
 
         Mod+O repeat=false { toggle-overview; }
 
-        Mod+Q repeat=false { close-window; }
+        Mod+W repeat=false { close-window; }
 
         Mod+Left  { focus-column-left; }
         Mod+Down  { focus-window-down; }
