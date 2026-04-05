@@ -20,7 +20,7 @@
       .modules-right {
         background-color: rgba(24, 24, 37, 0.8);
         border-radius: 12px;
-        padding: 0 4px;
+        padding: 0 10px;
       }
 
       #workspaces button {

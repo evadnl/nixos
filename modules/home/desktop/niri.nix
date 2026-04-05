@@ -153,6 +153,11 @@
     }
 
     window-rule {
+        match app-id="com.mitchellh.ghostty"
+        opacity 0.9
+    }
+
+    window-rule {
         match app-id=r#"firefox$"# title="^Picture-in-Picture$"
         open-floating true
     }
