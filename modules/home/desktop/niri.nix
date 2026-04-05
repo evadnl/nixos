@@ -159,6 +159,11 @@
     }
 
     window-rule {
+        match app-id="1password" title="Settings"
+        open-floating true
+    }
+
+    window-rule {
         match app-id="com.mitchellh.ghostty"
         draw-border-with-background false
         opacity 0.9
@@ -167,6 +172,7 @@
     /-window-rule {
         match app-id=r#"^org\.keepassxc\.KeePassXC$"#
         match app-id=r#"^org\.gnome\.World\.Secrets$"#
+        match app-id="1password"
         block-out-from "screen-capture"
     }
 

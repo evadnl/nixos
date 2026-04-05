@@ -6,8 +6,8 @@
     enableZshIntegration = true;
     settings = {
       theme = "Catppuccin Mocha";
-      # background-opacity = 0.9;
-      # background-blur = false;
+      background-opacity = 0.9;
+      background-blur = false;
 
       window-decoration = false;
 
