@@ -47,6 +47,7 @@
         mode "3440x1440@144"
         // scale 1
         transform "normal"
+        variable-refresh-rate 
     }
 
     // Settings that influence how windows are positioned and sized.
@@ -153,13 +154,14 @@
     }
 
     window-rule {
-        match app-id="com.mitchellh.ghostty"
-        opacity 0.9
+        match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+        open-floating true
     }
 
     window-rule {
-        match app-id=r#"firefox$"# title="^Picture-in-Picture$"
-        open-floating true
+        match app-id="com.mitchellh.ghostty"
+        draw-border-with-background false
+        opacity 0.9
     }
 
     /-window-rule {
