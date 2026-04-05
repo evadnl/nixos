@@ -42,11 +42,11 @@
         system = "x86_64-linux";
         specialArgs = {
           hostHomeModule = ./hosts/nixos-vm/home-configuration.nix;
+          catppuccinHomeModule = catppuccin.homeModules.catppuccin;
         };
         modules = [
           home-manager.nixosModules.home-manager
           sops-nix.nixosModules.sops
-          catppuccin.nixosModules.catppuccin
           ./hosts/nixos-vm/configuration.nix
           ./modules/desktop/regreet.nix
           ./modules/desktop/hyprland.nix
@@ -60,10 +60,10 @@
         system = "x86_64-linux";
         specialArgs = {
           hostHomeModule = ./hosts/ares/home-configuration.nix;
+          catppuccinHomeModule = catppuccin.homeModules.catppuccin;
         };
         modules = [
           home-manager.nixosModules.home-manager
-          catppuccin.nixosModules.catppuccin
           disko.nixosModules.disko
           lanzaboote.nixosModules.lanzaboote
           sops-nix.nixosModules.sops
@@ -94,6 +94,7 @@
       homeConfigurations."evad@nixos-vm" = home-manager.lib.homeManagerConfiguration {
         pkgs = import nixpkgs { system = "x86_64-linux"; config.allowUnfree = true; };
         modules = [
+          catppuccin.homeModules.catppuccin
           ./hosts/nixos-vm/home-configuration.nix
           {
             home.username = "evad";
@@ -105,6 +106,7 @@
       homeConfigurations."evad@ares" = home-manager.lib.homeManagerConfiguration {
         pkgs = import nixpkgs { system = "x86_64-linux"; config.allowUnfree = true; };
         modules = [
+          catppuccin.homeModules.catppuccin
           ./hosts/ares/home-configuration.nix
           {
             home.username = "evad";
