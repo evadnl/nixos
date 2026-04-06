@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 
 {
   programs.waybar = {
@@ -29,7 +29,7 @@
 
       #workspaces button.active,
       #workspaces button.focused {
-        border-bottom: 2px solid #b4befe;
+        border-bottom: 2px solid #89b4fa;
         background-color: rgba(49, 50, 68, 0.8);
       }
 
@@ -62,7 +62,7 @@
 
       #custom-power-menu {
         padding: 0 10px;
-        color: #f38ba8;
+        color: #ffffff;
       }
 
       #custom-power-menu:hover {
@@ -159,9 +159,9 @@
           spacing = 10;
         };
         "custom/power-menu" = {
-          format = "";
+          format = "󰐥";
           tooltip = false;
-          on-click = "sh -c 'choice=$(printf \"\\u23fb  Shutdown\\n\\uf021 Reboot\\n\\u23fe Suspend\\n\\u23cd Hibernate\" | rofi -dmenu -p \"Power\" -i) && case $choice in *Shutdown*) systemctl poweroff;; *Reboot*) systemctl reboot;; *Suspend*) systemctl suspend;; *Hibernate*) systemctl hibernate;; esac'";
+          on-click = "${config.xdg.configHome}/rofi/powermenu.sh";
         };
       }
     ];
