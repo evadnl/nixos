@@ -9,7 +9,7 @@
     ../../modules/home/desktop/waybar.nix
     # ../../modules/home/desktop/hyprlock.nix
     # ../../modules/home/desktop/hypridle.nix
-    ../../modules/home/desktop/fuzzel.nix
+    ../../modules/home/desktop/rofi.nix
     ../../modules/home/desktop/gtk.nix
     ../../modules/home/desktop/niri.nix
     ../../modules/home/services/dunst.nix

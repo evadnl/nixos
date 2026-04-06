@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 
@@ -28,6 +29,8 @@ in
     };
 
     services.libinput.enable = true;
+
+    environment.systemPackages = [ pkgs.pulseaudio ];
 
   };
 }

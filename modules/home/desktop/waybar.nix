@@ -7,7 +7,7 @@
       * {
         font-family: "JetBrainsMono Nerd Font Propo";
         font-weight: bold;
-        font-size: 12px;
+        font-size: 16px;
         color: #cdd6f4;
       }
 
@@ -59,6 +59,16 @@
         padding: 0 10px;
         min-width: 160px;
       }
+
+      #custom-power-menu {
+        padding: 0 10px;
+        color: #f38ba8;
+      }
+
+      #custom-power-menu:hover {
+        background-color: rgba(243, 139, 168, 0.15);
+        border-radius: 8px;
+      }
     '';
     settings = [
       {
@@ -69,6 +79,7 @@
         margin-left = 4;
         margin-right = 4;
         modules-left = [
+          "custom/power-menu"
           # "hyprland/workspaces"
           "niri/workspaces"
           # "hyprland/window"
@@ -136,8 +147,9 @@
         };
         pulseaudio = {
           format = "<span color=\"#f9e2af\"></span> {volume}%";
-          format-muted = "<span color=\"#6c7086\"></span>";
+          format-muted = "<span color=\"#6c7086\"></span> 0%";
           on-click = "pavucontrol";
+          on-click-right = "pactl set-sink-mute @DEFAULT_SINK@ toggle";
         };
         mpris = {
           format = "<span color=\"#a6e3a1\">󰝚</span> {title} - {artist}";
@@ -145,6 +157,11 @@
         };
         tray = {
           spacing = 10;
+        };
+        "custom/power-menu" = {
+          format = "";
+          tooltip = false;
+          on-click = "sh -c 'choice=$(printf \"\\u23fb  Shutdown\\n\\uf021 Reboot\\n\\u23fe Suspend\\n\\u23cd Hibernate\" | rofi -dmenu -p \"Power\" -i) && case $choice in *Shutdown*) systemctl poweroff;; *Reboot*) systemctl reboot;; *Suspend*) systemctl suspend;; *Hibernate*) systemctl hibernate;; esac'";
         };
       }
     ];

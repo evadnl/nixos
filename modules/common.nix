@@ -10,5 +10,6 @@
     iotop
     fastfetch
     just
+    dnsutils
   ];
 }

@@ -17,7 +17,7 @@ in
     programs.niri.enable = true;
     programs.xwayland.enable = true;
 
-    environment.systemPackages = [ pkgs.xwayland-satellite ];
+    environment.systemPackages = [ pkgs.xwayland-satellite pkgs.pulseaudio ];
 
     security.rtkit.enable = true;
 
