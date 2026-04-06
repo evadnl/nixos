@@ -20,9 +20,8 @@ in
       open = true; # Required for Blackwell (RTX 5080)
     };
     hardware.graphics.enable = true;
+    environment.systemPackages = with pkgs; [
+      nvtop
+    ];
   };
-
-  environment.systemPackages = with pkgs; [
-    nvtop
-  ];
 }
