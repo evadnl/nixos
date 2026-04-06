@@ -1,0 +1,33 @@
+     // https://niri-wm.github.io/niri/Configuration:-Input
+    input {
+        keyboard {
+            repeat-rate 35
+            repeat-delay 200
+
+            xkb {
+                layout "us"
+                variant "intl"
+                options "altwin:swap_lalt_lwin"
+            }
+            numlock
+        }
+
+        touchpad {
+            tap
+            natural-scroll
+        }
+
+        mouse {
+            accel-speed -0.5
+        }
+
+        trackpoint {
+            // off
+            // natural-scroll
+            // accel-speed 0.2
+            // accel-profile "flat"
+        }
+
+        warp-mouse-to-focus
+        focus-follows-mouse max-scroll-amount="0%"
+    }

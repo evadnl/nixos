@@ -1,0 +1,6 @@
+    // Autostart
+    spawn-at-startup "waybar"
+    spawn-at-startup "blueman-applet"
+    spawn-at-startup "swww-daemon"
+    spawn-at-startup "vesktop"
+    spawn-at-startup "1password" "--silent"

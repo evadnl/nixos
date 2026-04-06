@@ -30,5 +30,11 @@ in
 
     services.libinput.enable = true;
 
+    xdg.portal = {
+      enable = true;
+      extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+      config.common."org.freedesktop.impl.portal.Settings" = [ "gtk" ];
+    };
+
   };
 }

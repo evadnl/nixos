@@ -1,0 +1,7 @@
+   // https://niri-wm.github.io/niri/Configuration:-Outputs
+    output "DP-3" {
+        mode "3440x1440@143.923"
+        // scale 1
+        transform "normal"
+        variable-refresh-rate on-demand=true
+    }
