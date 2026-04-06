@@ -8,6 +8,13 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # Hibernate/hybrid-sleep via swapfile on btrfs
+  # Get the offset with: sudo btrfs inspect-internal map-swapfile -r /swap/swapfile
+  boot.resumeDevice = "/dev/disk/by-uuid/be1267e3-7ea3-414d-bb09-754cb9a33a5e";
+  boot.kernelParams = [ "resume_offset=533760" ];
+  # Stay in suspend for 30 minutes, then fall back to hibernate
+  systemd.sleep.settings.Sleep.HibernateDelaySec = "30min";
+
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nixpkgs.config.allowUnfree = true;
   security.hardening.profile = "workstation";

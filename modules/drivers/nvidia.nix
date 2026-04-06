@@ -18,6 +18,7 @@ in
     hardware.nvidia = {
       modesetting.enable = true;
       open = true; # Required for Blackwell (RTX 5080)
+      powerManagement.enable = true;
     };
     hardware.graphics.enable = true;
     environment.systemPackages = with pkgs; [
