@@ -21,7 +21,7 @@ in
     };
     hardware.graphics.enable = true;
     environment.systemPackages = with pkgs; [
-      nvtop
+      nvtopPackages.nvidia
     ];
   };
 }
