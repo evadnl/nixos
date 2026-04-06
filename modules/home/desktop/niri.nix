@@ -1,7 +1,21 @@
 { pkgs, ... }:
 
 {
-  programs.swaylock.enable = true;
+  programs.swaylock = {
+    enable = true;
+    package = pkgs.swaylock-effects;
+    settings = {
+      font-size = 24;
+      indicator-idle-visible = false;
+      indicator-radius = 100;
+      indicator-caps-lock = true;
+      show-failed-attempts = true;
+      indicator = true;
+      clock = true;
+      timestr = "%H:%M";
+      datestr = "%a, %d/%m/%y";
+    };
+  };
 
   catppuccin.swaylock = {
     enable = true;
@@ -43,7 +57,10 @@
     grim
     slurp
     wl-clipboard
-    swaylock
     swayidle
+    (pkgs.writeShellScriptBin "swaylock-random" ''
+      wallpaper=$(find "$HOME/Pictures/wallpapers" -type f \( -name "*.jpg" -o -name "*.png" -o -name "*.jpeg" -o -name "*.webp" \) | shuf -n 1)
+      exec swaylock --image "$wallpaper"
+    '')
   ];
 }
