@@ -1,6 +1,13 @@
 { pkgs, ... }:
 
 {
+  programs.swaylock.enable = true;
+
+  catppuccin.swaylock = {
+    enable = true;
+    flavor = "mocha";
+  };
+
   xdg.configFile = {
     "niri/config.kdl".text = ''
       include "inputs.kdl"
@@ -36,5 +43,7 @@
     grim
     slurp
     wl-clipboard
+    swaylock
+    swayidle
   ];
 }

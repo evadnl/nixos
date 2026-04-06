@@ -37,14 +37,21 @@
         padding: 0 14px;
       }
 
+      
+      #cpu {
+        padding: 0 5px 0 10px;
+      }
+      #temperature {
+        padding: 0 10px 0 10px;
+      }
       #clock,
-      #cpu,
       #memory,
       #network,
       #pulseaudio,
       #bluetooth,
       #tray,
-      #mpris {
+      #mpris,
+      #custom-gpu-temp {
         padding: 0 10px;
       }
 
@@ -62,9 +69,9 @@
         margin-left = 4;
         margin-right = 4;
         modules-left = [
-          "hyprland/workspaces"
+          # "hyprland/workspaces"
           "niri/workspaces"
-          "hyprland/window"
+          # "hyprland/window"
           "niri/window"
         ];
         modules-center = [  ];
@@ -73,20 +80,22 @@
           "mpris"
           "pulseaudio"
           "network"
+          "custom/gpu-temp"
           "cpu"
+          "temperature"
           "memory"
           "clock"
         ];
-        "hyprland/workspaces" = {
-          format = "{id}";
-          active-only = false;
-          persistent-workspaces = {
-            "*" = [ 1 2 3 4 ];
-          };
-        };
-        "hyprland/window" = {
-          max-length = 60;
-        };
+        # "hyprland/workspaces" = {
+        #   format = "{id}";
+        #   active-only = false;
+        #   persistent-workspaces = {
+        #     "*" = [ 1 2 3 4 ];
+        #   };
+        # };
+        # "hyprland/window" = {
+        #   max-length = 60;
+        # };
         "niri/workspaces" = {
           format = "{index}";
         };
@@ -96,6 +105,18 @@
         clock = {
           format = "<span color=\"#b4befe\">{0:%a %b %e}</span> {0:%H:%M}";
           tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
+        };
+        temperature = {
+          hwmon-path = "/sys/class/hwmon/hwmon2/temp1_input";
+          format = "{temperatureC}°C";
+          critical-threshold = 80;
+          format-critical = "<span color=\"#f38ba8\">{temperatureC}°C</span>";
+          interval = 5;
+        };
+        "custom/gpu-temp" = {
+          exec = "nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits";
+          format = "<span color=\"#cba6f7\"> </span> {}°C";
+          interval = 5;
         };
         cpu = {
           format = "<span color=\"#f38ba8\"></span> {usage}%";

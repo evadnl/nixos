@@ -117,5 +117,6 @@ fileSystems."/mnt/games1" = {
     htop
     fastfetch
     networkmanager
+    lm_sensors
   ];
 }
