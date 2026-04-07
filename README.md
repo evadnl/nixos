@@ -124,7 +124,7 @@ The desktop runs on Hyprland (Wayland compositor) with the following components:
 | **Hypridle** | Idle management and auto-locking |
 | **Fuzzel** | Application launcher |
 | **Dunst** | Notification daemon |
-| **swww** | Wallpaper daemon |
+| **awww** | Wallpaper daemon |
 | **Ghostty** | Terminal emulator |
 
 ## Updating Packages

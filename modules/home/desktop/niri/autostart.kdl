@@ -1,7 +1,7 @@
     // Autostart
     spawn-at-startup "waybar"
     spawn-at-startup "blueman-applet"
-    spawn-at-startup "swww-daemon"
+    spawn-at-startup "awww-daemon"
     spawn-at-startup "vesktop"
     spawn-at-startup "1password" "--silent"
-    spawn-at-startup "swayidle" "-w" "timeout" "300" "swaylock-random" "timeout" "600" "niri msg action power-off-monitors" "timeout" "1800" "systemctl hybrid-sleep" "before-sleep" "swaylock-random" "after-resume" "niri msg action power-on-monitors"
+    spawn-at-startup "swayidle" "-w" "timeout" "300" "swaylock-random" "timeout" "600" "niri msg action power-off-monitors" "timeout" "1800" "systemctl suspend" "before-sleep" "swaylock-random" "after-resume" "niri msg action power-on-monitors"

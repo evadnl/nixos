@@ -43,7 +43,7 @@
     exec-once = eval $(gnome-keyring-daemon --start --components=secrets,pkcs11)
     exec-once = waybar
     exec-once = blueman-applet
-    exec-once = swww-daemon
+    exec-once = awww-daemon
     exec-once = discord
     exec-once = 1password --silent
     exec-once = ${pkgs.writeShellScript "wallpaper-rotate" ''
@@ -52,7 +52,7 @@
       while true; do
         wallpaper=$(find "$WALLPAPER_DIR" -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" -o -name "*.gif" \) | shuf -n 1)
         transition=''${TRANSITIONS[$RANDOM % ''${#TRANSITIONS[@]}]}
-        swww img "$wallpaper" --transition-type "$transition"
+        awww img "$wallpaper" --transition-type "$transition"
         sleep 900
       done
     ''}
@@ -191,7 +191,7 @@
     bind = $mainMod, return, exec, $terminal
     bind = , Print, exec, grim -g "$(slurp)" - | wl-copy
     bind = $mainMod, W, killactive,
-    bind = $mainMod ALT, W, exec, swww img $(find ~/Pictures/wallpapers -type f | shuf -n 1) --transition-type random
+    bind = $mainMod ALT, W, exec, awww img $(find ~/Pictures/wallpapers -type f | shuf -n 1) --transition-type random
     bind = $mainMod, L, exec, loginctl lock-session
     bind = $mainMod, M, exec, command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch exit
     bind = $mainMod, E, exec, $fileManager
@@ -357,7 +357,7 @@
     hyprshutdown
     pavucontrol
     playerctl
-    swww
+    awww
     grim
     slurp
     wl-clipboard

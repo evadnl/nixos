@@ -23,7 +23,7 @@
       case "$chosen_idx" in
         0) swaylock-random ;;
         1) niri msg action quit ;;
-        2) systemctl hybrid-sleep ;;
+        2) systemctl suspend ;;
         3) systemctl reboot ;;
         4) systemctl poweroff ;;
         5) systemctl reboot --firmware-setup ;;

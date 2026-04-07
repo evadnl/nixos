@@ -53,7 +53,7 @@
     adwaita-icon-theme
     pavucontrol
     playerctl
-    swww
+    awww
     grim
     slurp
     wl-clipboard
