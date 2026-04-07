@@ -1,5 +1,3 @@
-    workspace "other"
-
     // Window rules
     window-rule {
         match app-id=r#"^org\.wezfurlong\.wezterm$"#
@@ -11,12 +9,12 @@
         open-floating true
     }
 
-    window-rule {
+    /-window-rule {
         match app-id="1password" title="Settings"
         open-floating true
     }
 
-    window-rule {
+    /-window-rule {
         match app-id="steam"
         open-on-workspace "other"
     }
