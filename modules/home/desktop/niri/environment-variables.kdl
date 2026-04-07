@@ -4,6 +4,7 @@
         XCURSOR_SIZE "24"
         XKB_DEFAULT_LAYOUT "us"
         XKB_DEFAULT_VARIANT "intl"
+        GTK_THEME "catppuccin-mocha-mauve-standard:dark"
         GTK_IM_MODULE "simple"
         QT_IM_MODULE "simple"
         QT_QPA_PLATFORM "wayland"

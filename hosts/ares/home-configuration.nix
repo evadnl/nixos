@@ -22,7 +22,7 @@
     ../../modules/home/shell/ssh.nix
     ../../modules/home/shell/zsh.nix
     ../../modules/home/shell/starship.nix
-    ../../modules/home/apps/files/nautilus.nix
+    ../../modules/home/apps/files/thunar.nix
     ../../modules/home/apps/browsers/firefox.nix
     ../../modules/home/apps/editors/vscode.nix
     ../../modules/home/apps/editors/zed.nix

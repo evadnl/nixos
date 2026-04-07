@@ -10,6 +10,7 @@
         "browser.startup.page" = 3;
         "ui.systemUsesDarkTheme" = 1;
         "browser.in-content.dark-mode.enabled" = true;
+        "media.hardwaremediakeys.enabled" = false;
       };
     };
   };

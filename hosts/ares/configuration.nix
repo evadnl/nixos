@@ -87,6 +87,34 @@ fileSystems."/mnt/games1" = {
   ];
 };
 
+fileSystems."/mnt/nas/downloads" = {
+  device = "nas01.evad.nl:/volume1/Download";
+  fsType = "nfs";
+  options = [
+    "nfsvers=4"
+    "noatime"
+    "soft" "timeo=30" "retrans=3"
+    "_netdev"
+    "noauto" "x-systemd.automount"
+    "x-systemd.idle-timeout=300"
+    "x-systemd.mount-timeout=10"
+  ];
+};
+
+fileSystems."/mnt/nas/fotos" = {
+  device = "nas01.evad.nl:/volume1/fotos";
+  fsType = "nfs";
+  options = [
+    "nfsvers=4"
+    "noatime"
+    "soft" "timeo=30" "retrans=3"
+    "_netdev"
+    "noauto" "x-systemd.automount"
+    "x-systemd.idle-timeout=300"
+    "x-systemd.mount-timeout=10"
+  ];
+};
+
 
   # fileSystems."/mnt/games" = {
   #   device = "/dev/disk/by-uuid/B47A52777A5235F8";
@@ -109,6 +137,15 @@ fileSystems."/mnt/games1" = {
   services.gvfs.enable = true;
   services.udisks2.enable = true;
 
+  programs.thunar = {
+    enable = true;
+    plugins = with pkgs; [
+      thunar-volman
+      thunar-archive-plugin
+    ];
+  };
+  services.tumbler.enable = true;
+
 
   # ===========================================================
   # PACKAGES
@@ -122,5 +159,9 @@ fileSystems."/mnt/games1" = {
     fastfetch
     networkmanager
     lm_sensors
+    nfs-utils
+    sops
+    age
+    ssh-to-age
   ];
 }
