@@ -137,6 +137,16 @@ fileSystems."/mnt/nas/fotos" = {
   services.gvfs.enable = true;
   services.udisks2.enable = true;
 
+  # Hide unmanaged partitions from Thunar/udisks2 sidebar
+  services.udev.extraRules = ''
+    # sda (old Windows drive) — all partitions
+    ENV{ID_FS_UUID}=="F604-6C18", ENV{UDISKS_IGNORE}="1"
+    ENV{ID_FS_UUID}=="2E2006D62006A4C5", ENV{UDISKS_IGNORE}="1"
+    ENV{ID_FS_UUID}=="E4CEDBEACEDBB352", ENV{UDISKS_IGNORE}="1"
+    # nvme1n1p1 NTFS "GAMES" partition (not in fstab)
+    ENV{ID_FS_UUID}=="B47A52777A5235F8", ENV{UDISKS_IGNORE}="1"
+  '';
+
   programs.thunar = {
     enable = true;
     plugins = with pkgs; [
