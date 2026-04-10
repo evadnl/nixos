@@ -13,9 +13,11 @@
     ../../modules/home/desktop/gtk.nix
     ../../modules/home/desktop/niri.nix
     ../../modules/home/services/dunst.nix
+    # ../../modules/home/services/hyperhdr.nix
     ../../modules/home/apps/terminals/ghostty.nix
     ../../modules/home/apps/social/discord.nix
     ../../modules/home/apps/media/spotify.nix
+    ../../modules/home/apps/media/mpv.nix
     ../../modules/home/apps/gaming/default.nix
     ../../modules/home/apps/dev/claude-code.nix
     ../../modules/home/apps/dev/gemini-cli.nix

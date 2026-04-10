@@ -2,6 +2,7 @@
         Mod+Shift+Slash { show-hotkey-overlay; }
 
         Mod+Return hotkey-overlay-title="Open a Terminal: ghostty" { spawn "ghostty"; }
+        Mod+Ctrl+Return hotkey-overlay-title="Open a Floating Terminal: ghostty" { spawn "ghostty" "--class=com.mitchellh.ghostty-float"; }
         Mod+space hotkey-overlay-title="Run an Application: rofi" { spawn "rofi" "-show" "drun"; }
         Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock-random"; }
 

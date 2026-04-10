@@ -30,9 +30,16 @@
     }
 
     window-rule {
-        match app-id="com.mitchellh.ghostty"
+        match app-id=r#"^com\.mitchellh\.ghostty(-float)?$"#
         draw-border-with-background false
         opacity 0.9
+    }
+
+    window-rule {
+        match app-id="com.mitchellh.ghostty-float"
+        open-floating true
+        default-column-width { proportion 0.5; }
+        default-window-height { proportion 0.6; }
     }
 
     window-rule {
