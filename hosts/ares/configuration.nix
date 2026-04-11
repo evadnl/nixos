@@ -12,7 +12,11 @@
   # required for NVIDIA open module to properly release GPU resources
   systemd.sleep.settings.Sleep.FreezeUserSessions = false;
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings = {
+    experimental-features = [ "nix-command" "flakes" ];
+    substituters = [ "https://noctalia.cachix.org" ];
+    trusted-public-keys = [ "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4=" ];
+  };
   nixpkgs.config.allowUnfree = true;
   security.hardening.profile = "workstation";
   system.stateVersion = "26.05";
@@ -28,6 +32,7 @@
   drivers.nvidia.enable = true;
   drivers.amdCpu.enable = true;
   bluetooth.enable = true;
+  hardware.mouse.logitech.enable = true;
   hardware.enableRedistributableFirmware = true;
 
 
@@ -136,6 +141,8 @@ fileSystems."/mnt/nas/fotos" = {
   services.openssh.enable = true;
   services.gvfs.enable = true;
   services.udisks2.enable = true;
+  services.upower.enable = true;
+  services.power-profiles-daemon.enable = true;
 
   # Hide unmanaged partitions from Thunar/udisks2 sidebar
   services.udev.extraRules = ''

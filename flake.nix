@@ -25,6 +25,11 @@
     };
 
     catppuccin.url = "github:catppuccin/nix";
+
+    noctalia = {
+      url = "github:noctalia-dev/noctalia-shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -35,6 +40,7 @@
       sops-nix,
       home-manager,
       catppuccin,
+      noctalia,
       ...
     }:
     {
@@ -43,6 +49,7 @@
         specialArgs = {
           hostHomeModule = ./hosts/nixos-vm/home-configuration.nix;
           catppuccinHomeModule = catppuccin.homeModules.catppuccin;
+          noctaliaHomeModule = noctalia.homeModules.default;
         };
         modules = [
           home-manager.nixosModules.home-manager
@@ -61,6 +68,7 @@
         specialArgs = {
           hostHomeModule = ./hosts/ares/home-configuration.nix;
           catppuccinHomeModule = catppuccin.homeModules.catppuccin;
+          noctaliaHomeModule = noctalia.homeModules.default;
         };
         modules = [
           home-manager.nixosModules.home-manager
@@ -74,6 +82,7 @@
           ./modules/apps/1password.nix
           ./modules/gaming.nix
           ./modules/hardware/bluetooth.nix
+          ./modules/hardware/mouse.nix
           ./modules/desktop/regreet.nix
           ./modules/desktop/hyprland.nix
           ./modules/desktop/niri.nix
@@ -95,6 +104,7 @@
         pkgs = import nixpkgs { system = "x86_64-linux"; config.allowUnfree = true; };
         modules = [
           catppuccin.homeModules.catppuccin
+          noctalia.homeModules.default
           ./hosts/nixos-vm/home-configuration.nix
           {
             home.username = "evad";
@@ -107,6 +117,7 @@
         pkgs = import nixpkgs { system = "x86_64-linux"; config.allowUnfree = true; };
         modules = [
           catppuccin.homeModules.catppuccin
+          noctalia.homeModules.default
           ./hosts/ares/home-configuration.nix
           {
             home.username = "evad";
