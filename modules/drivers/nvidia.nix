@@ -24,5 +24,10 @@ in
     environment.systemPackages = with pkgs; [
       nvtopPackages.nvidia
     ];
+    environment.variables = {
+      __GL_THREADED_OPTIMIZATION=1;
+      __GL_SHADER_DISK_CACHE=1;
+      __GL_SHADER_DISK_CACHE_PATH="/mnt/games1/shader_cache";
+    };
   };
 }
