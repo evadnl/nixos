@@ -19,5 +19,9 @@ in
     };
 
     hardware.steam-hardware.enable = true;
+
+    environment.systemPackages = [
+      pkgs.protonplus
+    ];
   };
 }
