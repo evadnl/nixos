@@ -14,7 +14,7 @@
     ../../modules/home/desktop/niri.nix
     ../../modules/home/desktop/noctalia.nix
     # ../../modules/home/services/dunst.nix
-    # ../../modules/home/services/hyperhdr.nix
+    ../../modules/home/services/ledfx.nix
     ../../modules/home/apps/terminals/ghostty.nix
     ../../modules/home/apps/social/discord.nix
     ../../modules/home/apps/media/spotify.nix
@@ -27,6 +27,7 @@
     ../../modules/home/shell/starship.nix
     ../../modules/home/apps/files/thunar.nix
     ../../modules/home/apps/browsers/firefox.nix
+    ../../modules/home/apps/browsers/zen.nix
     ../../modules/home/apps/editors/vscode.nix
     ../../modules/home/apps/editors/zed.nix
   ];
