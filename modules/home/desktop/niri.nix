@@ -52,6 +52,7 @@
 
   home.packages = with pkgs; [
     adwaita-icon-theme
+    wl-mirror
     # Moved to modules/home/desktop/noctalia.nix:
     # pavucontrol
     # playerctl

@@ -18,6 +18,11 @@ in
       enableRenice = true;
     };
 
+    programs.gamescope = {
+      enable = true;
+      capSysNice = true;
+    };
+
     hardware.steam-hardware.enable = true;
 
     environment.systemPackages = [

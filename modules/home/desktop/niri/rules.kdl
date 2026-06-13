@@ -22,6 +22,7 @@
     window-rule {
         match app-id="steam" title=r#"^notificationtoasts_\d+_desktop$"#
         default-floating-position x=10 y=10 relative-to="bottom-right"
+        open-focused false
     }
 
     window-rule {
@@ -52,4 +53,10 @@
     /-window-rule {
         geometry-corner-radius 12
         clip-to-geometry true
+    }
+
+    window-rule {
+        match app-id="at.yrlf.wl_mirror"
+        open-on-output "HDMI-A-1"
+        open-fullscreen true
     }

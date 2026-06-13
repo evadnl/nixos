@@ -14,7 +14,6 @@
     ../../modules/home/desktop/niri.nix
     ../../modules/home/desktop/noctalia.nix
     # ../../modules/home/services/dunst.nix
-    ../../modules/home/services/ledfx.nix
     ../../modules/home/apps/terminals/ghostty.nix
     ../../modules/home/apps/social/discord.nix
     ../../modules/home/apps/media/spotify.nix
@@ -22,6 +21,7 @@
     ../../modules/home/apps/gaming/default.nix
     ../../modules/home/apps/dev/claude-code.nix
     ../../modules/home/apps/dev/gemini-cli.nix
+    ../../modules/home/apps/dev/nodejs.nix
     ../../modules/home/shell/ssh.nix
     ../../modules/home/shell/zsh.nix
     ../../modules/home/shell/starship.nix

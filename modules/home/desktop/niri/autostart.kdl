@@ -4,6 +4,7 @@
     spawn-at-startup "vesktop"
     spawn-at-startup "1password" "--silent"
     spawn-at-startup "steam" "-silent"
+    spawn-at-startup "wl-mirror" "HDMI-A-2"
     // Replaced by Noctalia Shell:
     // spawn-at-startup "waybar"
     // spawn-at-startup "awww-daemon"

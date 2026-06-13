@@ -1,7 +1,20 @@
    // https://niri-wm.github.io/niri/Configuration:-Outputs
-    output "DP-3" {
-        mode "3440x1440@143.923"
-        // scale 1
+    output "DP-2" {
+        mode "3440x1440@85"
         transform "normal"
         variable-refresh-rate on-demand=true
+        position x=0 y=0
+    }
+
+    output "HDMI-A-2" {
+        mode "3440x1440@360.097"
+        transform "normal"
+        position x=0 y=1440
+        variable-refresh-rate on-demand=true
+    }
+
+    output "HDMI-A-1" {
+        mode "3440x1440@144"
+        transform "normal"
+        position x=3440 y=0
     }

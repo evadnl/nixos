@@ -2,7 +2,10 @@
   description = "NixOS configuration";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    # Pinned to the commit immediately before NVIDIA driver bumped to 595.71.05
+    # (87beaf92, 2026-04-30), which causes a white screen on Blackwell + niri.
+    # Revert to "github:NixOS/nixpkgs/nixos-unstable" once upstream lands a fix.
+    nixpkgs.url = "github:NixOS/nixpkgs/e1a4eb0bbf3e73b6ced83beb9c19b7f185a3d5bd";
 
     disko = {
       url = "github:nix-community/disko/latest";
