@@ -1,5 +1,5 @@
     // Autostart
-    // noctalia-shell is started as a systemd user service (programs.noctalia-shell.systemd.enable)
+    spawn-at-startup "noctalia-shell"
     spawn-at-startup "blueman-applet"
     spawn-at-startup "vesktop"
     spawn-at-startup "1password" "--silent"
