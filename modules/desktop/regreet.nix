@@ -14,7 +14,7 @@ let
   # so ReGreet lands on a single screen instead of being centred across the
   # multi-monitor layout. Launches regreet, then quits niri once login starts.
   greeterConfig = pkgs.writeText "niri-greeter.kdl" ''
-    ${lib.concatMapStringsSep "\n" (o: ''output "${o}" { off }'') cfg.disableOutputs}
+    ${lib.concatMapStringsSep "\n" (o: ''output "${o}" { off; }'') cfg.disableOutputs}
 
     output "${cfg.output}" {
         transform "normal"
