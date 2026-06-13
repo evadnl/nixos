@@ -41,6 +41,8 @@
   # ===========================================================
 
   desktop.regreet.enable = true;
+  desktop.regreet.output = "HDMI-A-2";
+  desktop.regreet.disableOutputs = [ "DP-2" "HDMI-A-1" ];
   # desktop.hyprland.enable = true;
   desktop.niri.enable = true;
   gaming.enable = true;

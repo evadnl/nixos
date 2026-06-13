@@ -9,10 +9,48 @@ let
   cfg = config.desktop.regreet;
 
   regreet-wallpaper = "/var/lib/regreet/wallpaper";
+
+  # Greeter-only niri config: keep just the chosen output enabled (others off)
+  # so ReGreet lands on a single screen instead of being centred across the
+  # multi-monitor layout. Launches regreet, then quits niri once login starts.
+  greeterConfig = pkgs.writeText "niri-greeter.kdl" ''
+    ${lib.concatMapStringsSep "\n" (o: ''output "${o}" { off }'') cfg.disableOutputs}
+
+    output "${cfg.output}" {
+        transform "normal"
+    }
+
+    hotkey-overlay {
+        skip-at-startup
+    }
+
+    spawn-at-startup "sh" "-c" "${lib.getExe config.programs.regreet.package}; ${lib.getExe config.programs.niri.package} msg action quit --skip-confirmation"
+  '';
 in
 {
   options.desktop.regreet = {
     enable = lib.mkEnableOption "ReGreet display greeter";
+
+    output = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = null;
+      example = "HDMI-A-2";
+      description = ''
+        Run the greeter inside a dedicated niri instance pinned to this output
+        (e.g. "HDMI-A-2") instead of cage. Leave null to use the default cage
+        compositor, which spans all monitors and centres the greeter on the seam.
+      '';
+    };
+
+    disableOutputs = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+      example = [ "DP-2" "HDMI-A-1" ];
+      description = ''
+        Outputs to switch off in the greeter so the greeter only shows on
+        `output`. Only used when `output` is set.
+      '';
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -47,6 +85,12 @@ in
         name = "catppuccin-mocha-mauve-standard";
       };
     };
+
+    # When an output is chosen, drive the greeter with niri (pinned to that
+    # output) rather than the default cage compositor.
+    services.greetd.settings.default_session.command = lib.mkIf (cfg.output != null) (
+      "${pkgs.dbus}/bin/dbus-run-session ${lib.getExe config.programs.niri.package} -c ${greeterConfig}"
+    );
 
     # Copy a random wallpaper to a system-wide path readable by ReGreet
     systemd.services.regreet-wallpaper-sync = {
