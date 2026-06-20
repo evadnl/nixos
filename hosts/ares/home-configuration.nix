@@ -16,6 +16,7 @@
     # ../../modules/home/services/dunst.nix
     ../../modules/home/apps/terminals/ghostty.nix
     ../../modules/home/apps/social/discord.nix
+    ../../modules/home/apps/social/whatsapp.nix
     ../../modules/home/apps/media/spotify.nix
     ../../modules/home/apps/media/vlc.nix
     ../../modules/home/apps/gaming/default.nix
