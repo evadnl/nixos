@@ -1,5 +1,5 @@
     // Autostart
-    spawn-at-startup "noctalia-shell"
+    spawn-at-startup "noctalia"
     spawn-at-startup "blueman-applet"
     spawn-at-startup "vesktop"
     spawn-at-startup "1password" "--silent"
