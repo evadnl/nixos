@@ -2,14 +2,7 @@
   description = "NixOS configuration";
 
   inputs = {
-    # Pinned to the commit immediately before NVIDIA driver bumped to 595.71.05
-    # (87beaf92, 2026-04-30), which causes a white screen on Blackwell + niri.
-    # Tested nvidia 595.80 (unstable @ 2026-06-10) on 2026-06-14: still broken —
-    # regreet SIGABRTs in a greetd respawn loop (GTK4 GStreamer media-file abort
-    # in libnvidia-glcore 595.80) so no greeter ever appears = black screen.
-    # Keep pinned. Revert to "github:NixOS/nixpkgs/nixos-unstable" once upstream
-    # lands a fix.
-    nixpkgs.url = "github:NixOS/nixpkgs/e1a4eb0bbf3e73b6ced83beb9c19b7f185a3d5bd";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     disko = {
       url = "github:nix-community/disko/latest";
