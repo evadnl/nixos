@@ -54,6 +54,24 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    # ReGreet 0.4.0 routes any wallpaper through GStreamer (GTK media file), but
+    # the nixpkgs package omits the GStreamer runtime deps, so it SIGABRTs at
+    # launch whenever a wallpaper is set -> greetd respawn loop -> black login
+    # screen (upstream ReGreet#165). Replicates nixpkgs#530302 (merged to master
+    # 2026-06-16, not yet in the nixos-unstable channel). Drop once our nixpkgs
+    # pin includes that fix.
+    nixpkgs.overlays = [
+      (final: prev: {
+        regreet = prev.regreet.overrideAttrs (old: {
+          buildInputs = (old.buildInputs or [ ]) ++ (with final.gst_all_1; [
+            gstreamer
+            gst-plugins-base
+            gst-plugins-good
+          ]);
+        });
+      })
+    ];
+
     programs.regreet = {
       enable = true;
       settings = {
