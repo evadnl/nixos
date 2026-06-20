@@ -31,5 +31,6 @@
     ../../modules/home/apps/browsers/zen.nix
     ../../modules/home/apps/editors/vscode.nix
     ../../modules/home/apps/editors/zed.nix
+    ../../modules/home/apps/hardware/streamdeck.nix
   ];
 }
