@@ -2,7 +2,6 @@
     output "DP-2" {
         mode "3440x1440@85"
         transform "normal"
-        variable-refresh-rate on-demand=true
         position x=0 y=0
     }
 
