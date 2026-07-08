@@ -4,8 +4,9 @@
     spawn-at-startup "vesktop"
     spawn-at-startup "1password" "--silent"
     spawn-at-startup "steam" "-silent"
-    spawn-at-startup "streamcontroller" "-b"
-    spawn-at-startup "wl-mirror" "HDMI-A-2"
+    // wl-mirror (ASUS -> capture card) is spawned from config.kdl: it must resolve
+    // the ASUS's connector at launch because wl-mirror can only name the source by
+    // connector, and connector names reshuffle between cold boots.
     // Replaced by Noctalia Shell:
     // spawn-at-startup "waybar"
     // spawn-at-startup "awww-daemon"

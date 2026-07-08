@@ -156,7 +156,10 @@
         Mod+Shift+E { quit; }
         Ctrl+Alt+Delete { quit; }
 
-        // Mod+Shift+P { power-off-monitors; }
+        // Re-sync the ASUS (HDMI-A-2) after a KVM switch: it can't re-lock the
+        // HDMI link at 360Hz when the KVM reconnects it, and niri never sees a
+        // disconnect, so the panel stays black. Power-cycling the output fixes it.
+        Mod+Shift+P hotkey-overlay-title="Re-sync ASUS monitor (KVM)" { spawn-sh "niri msg output HDMI-A-2 off; sleep 2; niri msg output HDMI-A-2 on"; }
     }
 
     hotkey-overlay {

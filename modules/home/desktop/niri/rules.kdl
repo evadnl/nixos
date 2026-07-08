@@ -57,6 +57,8 @@
 
     window-rule {
         match app-id="at.yrlf.wl_mirror"
-        open-on-output "HDMI-A-1"
+        // Capture card, matched by EDID (make/model/serial) not connector name —
+        // "HDMI-A-1" lands on the ASUS on some boots. See outputs.kdl.
+        open-on-output "PNP(GSV) GSV HDMI2.1   0x00000001"
         open-fullscreen true
     }

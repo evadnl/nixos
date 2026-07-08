@@ -1,5 +1,27 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
+let
+  # Mirror the ASUS onto the GSV capture card. wl-mirror can only name the source
+  # output by connector, and niri assigns connector names (HDMI-A-1/HDMI-A-2) in an
+  # unstable order across cold boots, so resolve the ASUS's current connector from
+  # `niri msg outputs` — matched on its model (PG34WCDN), which is stable — and
+  # mirror that. The window is placed on the capture card by the open-on-output rule
+  # in niri/rules.kdl (matched by the card's EDID, also connector-independent).
+  mirrorAsus = pkgs.writeShellScript "wl-mirror-asus" ''
+    conn=""
+    for _ in $(${pkgs.coreutils}/bin/seq 1 20); do
+      conn=$(${lib.getExe' pkgs.niri "niri"} msg outputs \
+        | ${pkgs.gawk}/bin/awk -F'[()]' '/PG34WCDN/ { print $2; exit }')
+      [ -n "$conn" ] && break
+      ${pkgs.coreutils}/bin/sleep 0.5
+    done
+    if [ -z "$conn" ]; then
+      echo "wl-mirror-asus: ASUS PG34WCDN not found in niri outputs" >&2
+      exit 1
+    fi
+    exec ${lib.getExe' pkgs.wl-mirror "wl-mirror"} "$conn"
+  '';
+in
 {
   # Replaced by Noctalia Shell's built-in lock screen.
   # programs.swaylock = {
@@ -32,6 +54,10 @@
       include "keybinds.kdl"
       include "layout.kdl"
       include "rules.kdl"
+
+      // Mirror the ASUS onto the capture card. Kept here (not in autostart.kdl) so
+      // it can resolve the ASUS's connector at launch — see wl-mirror-asus above.
+      spawn-at-startup "${mirrorAsus}"
 
       prefer-no-csd
       screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
