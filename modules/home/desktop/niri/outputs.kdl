@@ -1,19 +1,39 @@
    // https://niri-wm.github.io/niri/Configuration:-Outputs
-    output "DP-2" {
+    //
+    // Outputs are matched by monitor make/model/serial (the quoted string from
+    // `niri msg outputs`), NOT connector name. Connector names (DP-1, HDMI-A-1, ...)
+    // are handed out by the kernel in DRM enumeration order and reshuffle between
+    // cold boots — with two HDMI sinks (the ASUS and the GSV capture card) the
+    // HDMI-A-1/HDMI-A-2 labels swap around, which is why the displays kept switching.
+    // EDID identity is stable per physical monitor, so match on that instead.
+
+    // LG 34" ultrawide (85 Hz)
+    output "LG Electronics LG ULTRAGEAR 103NTBK9D077" {
         mode "3440x1440@85"
         transform "normal"
         position x=0 y=0
     }
 
-    output "HDMI-A-2" {
+    // ASUS PG34WCDN ultrawide (360 Hz)
+    output "ASUSTek COMPUTER INC PG34WCDN W4LMAS016832" {
         mode "3440x1440@360.097"
         transform "normal"
         position x=0 y=1440
         variable-refresh-rate on-demand=true
     }
 
-    output "HDMI-A-1" {
-        mode "3440x1440@144"
+    // GSV HDMI2.1 capture device (hosts the wl-mirror of the ASUS, see rules.kdl).
+    // Positioned with a deliberate 200px gap so it is NOT directly adjacent to the
+    // desktop outputs: niri only lets the cursor cross between adjacent outputs, so
+    // this stops the pointer sliding onto the capture by accident. The mirror window
+    // still lands here because its open-on-output rule places it by name.
+    //
+    // Matched by EDID (make/model/serial) like the real monitors — never by
+    // connector name: "HDMI-A-2" lands on the ASUS on some boots, which would force
+    // the ASUS to 60 Hz. The three spaces before the serial are EDID padding niri
+    // reproduces verbatim, and matching is an exact string compare, so keep them.
+    output "PNP(GSV) GSV HDMI2.1   0x00000001" {
+        mode "3440x1440@60"
         transform "normal"
-        position x=3440 y=0
+        position x=3640 y=0
     }
