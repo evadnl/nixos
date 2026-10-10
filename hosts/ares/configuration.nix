@@ -41,8 +41,8 @@
   # ===========================================================
 
   desktop.regreet.enable = true;
-  desktop.regreet.output = "HDMI-A-2";
-  desktop.regreet.disableOutputs = [ "HDMI-A-1" ];
+  desktop.regreet.output = "ASUSTek COMPUTER INC PG34WCDN W4LMAS016832";
+  desktop.regreet.disableOutputs = [ "PNP(GSV) GSV HDMI2.1   0x00000001" ];
   # desktop.hyprland.enable = true;
   desktop.niri.enable = true;
   gaming.enable = true;
