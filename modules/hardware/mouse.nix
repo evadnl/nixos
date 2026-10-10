@@ -5,21 +5,12 @@ let
 in
 {
   options.hardware.mouse = {
-    logitech.enable = lib.mkEnableOption "Logitech mouse support (Solaar + Piper/libratbag)";
+    logitech.enable = lib.mkEnableOption "Logitech mouse support (Solaar)";
   };
 
   config = lib.mkIf cfg.logitech.enable {
-    hardware.logitech.wireless = {
-      enable = true;
-      enableGraphical = true;
-    };
+    hardware.logitech.wireless.enable = true;
 
-    services.ratbagd.enable = true;
-
-    environment.systemPackages = with pkgs; [
-      solaar
-      piper
-      libratbag
-    ];
+    programs.solaar.enable = true;
   };
 }

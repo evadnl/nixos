@@ -24,7 +24,7 @@ let
         skip-at-startup
     }
 
-    spawn-at-startup "sh" "-c" "${lib.getExe config.programs.regreet.package}; ${lib.getExe config.programs.niri.package} msg action quit --skip-confirmation"
+    spawn-at-startup "sh" "-c" "${lib.getExe config.services.displayManager.regreet.package}; ${lib.getExe config.programs.niri.package} msg action quit --skip-confirmation"
   '';
 in
 {
@@ -72,7 +72,7 @@ in
       })
     ];
 
-    programs.regreet = {
+    services.displayManager.regreet = {
       enable = true;
       settings = {
         background = {
