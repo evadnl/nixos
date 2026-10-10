@@ -10,21 +10,33 @@ let
 
   regreet-wallpaper = "/var/lib/regreet/wallpaper";
 
-  # Greeter-only niri config: keep just the chosen output enabled (others off)
+  monitorDesc = o: "desc:${builtins.head (lib.splitString "  " o)}";
+
+  # Greeter-only Hyprland config: keep just the chosen output enabled (others off)
   # so ReGreet lands on a single screen instead of being centred across the
-  # multi-monitor layout. Launches regreet, then quits niri once login starts.
-  greeterConfig = pkgs.writeText "niri-greeter.kdl" ''
-    ${lib.concatMapStringsSep "\n" (o: ''output "${o}" { off; }'') cfg.disableOutputs}
+  # multi-monitor layout. Launches regreet, then quits Hyprland once login starts.
+  greeterConfig = pkgs.writeText "hyprland-greeter.lua" ''
+    ${lib.concatMapStringsSep "\n" (
+      o: ''hl.monitor({ output = "${monitorDesc o}", disabled = true })''
+    ) cfg.disableOutputs}
 
-    output "${cfg.output}" {
-        transform "normal"
-    }
+    hl.monitor({ output = "${monitorDesc cfg.output}", mode = "preferred", position = "0x0", scale = 1 })
 
-    hotkey-overlay {
-        skip-at-startup
-    }
+    hl.config({
+      misc = {
+        disable_hyprland_logo = true,
+        disable_splash_rendering = true,
+        force_default_wallpaper = 0,
+      },
+      ecosystem = {
+        no_update_news = true,
+        no_donation_nag = true,
+      },
+    })
 
-    spawn-at-startup "sh" "-c" "${lib.getExe config.services.displayManager.regreet.package}; ${lib.getExe config.programs.niri.package} msg action quit --skip-confirmation"
+    hl.on("hyprland.start", function()
+      hl.exec_cmd("sh -c '${lib.getExe config.services.displayManager.regreet.package}; ${config.programs.hyprland.package}/bin/hyprctl dispatch \"hl.dsp.exit()\"'")
+    end)
   '';
 in
 {
@@ -34,10 +46,10 @@ in
     output = lib.mkOption {
       type = lib.types.nullOr lib.types.str;
       default = null;
-      example = "HDMI-A-2";
+      example = "ASUSTek COMPUTER INC PG34WCDN W4LMAS016832";
       description = ''
-        Run the greeter inside a dedicated niri instance pinned to this output
-        (e.g. "HDMI-A-2") instead of cage. Leave null to use the default cage
+        Run the greeter inside a dedicated Hyprland instance pinned to this monitor
+        (matched by its make, model and serial) instead of cage. Leave null to use the default cage
         compositor, which spans all monitors and centres the greeter on the seam.
       '';
     };
@@ -45,7 +57,7 @@ in
     disableOutputs = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [ ];
-      example = [ "DP-2" "HDMI-A-1" ];
+      example = [ "GSV GSV HDMI2.1   0x00000001" ];
       description = ''
         Outputs to switch off in the greeter so the greeter only shows on
         `output`. Only used when `output` is set.
@@ -104,10 +116,10 @@ in
       };
     };
 
-    # When an output is chosen, drive the greeter with niri (pinned to that
+    # When an output is chosen, drive the greeter with Hyprland (pinned to that
     # output) rather than the default cage compositor.
     services.greetd.settings.default_session.command = lib.mkIf (cfg.output != null) (
-      "${pkgs.dbus}/bin/dbus-run-session ${lib.getExe config.programs.niri.package} -c ${greeterConfig}"
+      "${pkgs.dbus}/bin/dbus-run-session ${config.programs.hyprland.package}/bin/start-hyprland --path ${config.programs.hyprland.package}/bin/Hyprland -- -c ${greeterConfig}"
     );
 
     # Copy a random wallpaper to a system-wide path readable by ReGreet
