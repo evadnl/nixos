@@ -59,7 +59,8 @@ modules/
   desktop/         # Compositors and greeters (desktop.niri, desktop.hyprland,
                    # desktop.regreet, desktop.sddm)
   drivers/         # Hardware drivers (drivers.amdCpu.enable, drivers.nvidia.enable)
-  hardware/        # bluetooth.enable, hardware.mouse.logitech.enable, hardware.ddc.enable
+  hardware/        # bluetooth.enable, hardware.mouse.logitech.enable, hardware.ddc.enable,
+                   # hardware.keyboard.hyperTab.enable
   network/         # Firewall with SSH subnet restrictions (network.firewall.enable)
   os/              # Locale, Lanzaboote secure boot, Wayland (os.secureBoot.enable, os.wayland.enable)
   security/        # System hardening profiles (security.hardening.profile)
@@ -68,10 +69,12 @@ modules/
     base.nix                    # Home-manager base (stateVersion, etc.)
     default.nix                 # Wires home-manager into the system
     desktop/
-      niri.nix                  # Niri config; assembles the KDL fragments in niri/
+      hyprland.nix              # Hyprland config (Lua); loads the fragments in hyprland/
+      hyprland/                 # monitors, input, environment, autostart, look, keybinds, rules
+      niri.nix                  # Niri config (inactive); assembles the KDL fragments in niri/
       niri/                     # outputs, inputs, layout, keybinds, rules, autostart
       ...                       # cursor, fonts, gtk, noctalia, waybar, fuzzel, rofi,
-                                # hyprland/hyprlock/hypridle
+                                # hyprlock/hypridle
     shell/                      # zsh, starship, ssh
     services/                   # dunst
     apps/
@@ -157,14 +160,14 @@ Each `configuration.nix` uses consistent section headers in this order. Omit sec
 ### User (`user.*`)
 Declarative primary user. Set `user.sshPrivateKey.enable = true` to deploy the `ssh_private_key` secret from `secrets.yaml` to `/home/<user>/.ssh/id_ed25519` (symlink to `/run/secrets/ssh_private_key`). Authorized keys go in `user.authorizedKeys` — NixOS places them at `/etc/ssh/authorized_keys.d/<user>`, not `~/.ssh/authorized_keys`.
 
-### Niri (`desktop.niri.enable`)
-The compositor `ares` actually runs. Scrollable-tiling Wayland compositor with Xwayland-satellite, Pipewire audio (PulseAudio + ALSA compat), libinput and dconf. Enable alongside `os.wayland.enable`. The user-level config lives in `modules/home/desktop/niri.nix`, which assembles the KDL fragments under `modules/home/desktop/niri/`.
-
 ### Hyprland (`desktop.hyprland.enable`)
-Alternative Wayland compositor with UWSM, Pipewire audio (PulseAudio + ALSA compat) and rtkit for realtime scheduling. Currently commented out on `ares` in favour of Niri, but kept working. Enable alongside `os.wayland.enable`.
+The compositor `ares` actually runs. Wayland compositor with UWSM, Pipewire audio (PulseAudio + ALSA compat), rtkit, dconf and the GTK portal. Enable alongside `os.wayland.enable`. Hyprland 0.56+ is configured in Lua: `modules/home/desktop/hyprland.nix` sets `configType = "lua"` and loads the fragments under `modules/home/desktop/hyprland/` through `extraLuaFiles`. Every window floats by default; windows are arranged Rectangle-style from a Hyper+W layer (see `keybinds.lua`), with Hyper coming from `hardware.keyboard.hyperTab`. Monitors are matched by EDID with `desc:` prefixes, never connector names. Check a config change with `Hyprland --verify-config -c <path>/hyprland.lua`.
+
+### Niri (`desktop.niri.enable`)
+Scrollable-tiling Wayland compositor with Xwayland-satellite, Pipewire audio (PulseAudio + ALSA compat), libinput and dconf. Currently commented out on `ares` in favour of Hyprland, but kept working. The user-level config lives in `modules/home/desktop/niri.nix`, which assembles the KDL fragments under `modules/home/desktop/niri/`.
 
 ### ReGreet (`desktop.regreet.enable`)
-Graphical greetd greeter, themed with Catppuccin Mocha. Enabling it pulls in greetd. Set `desktop.regreet.output` to pin the greeter to one monitor — that swaps the default cage compositor for a dedicated niri instance, and `desktop.regreet.disableOutputs` lists the monitors it switches off. The module carries an overlay adding GStreamer runtime deps to `pkgs.regreet`; without it a wallpaper makes ReGreet 0.4.0 SIGABRT into a greetd respawn loop (black login screen). Drop the overlay once the nixpkgs pin includes nixpkgs#530302.
+Graphical greetd greeter, themed with Catppuccin Mocha. Enabling it pulls in greetd. Set `desktop.regreet.output` to pin the greeter to one monitor — that swaps the default cage compositor for a dedicated Hyprland instance, and `desktop.regreet.disableOutputs` lists the monitors it switches off. Both take EDID names (make model serial); anything after a double space is dropped so padded EDID strings still prefix-match. The module carries an overlay adding GStreamer runtime deps to `pkgs.regreet`; without it a wallpaper makes ReGreet 0.4.0 SIGABRT into a greetd respawn loop (black login screen). Drop the overlay once the nixpkgs pin includes nixpkgs#530302.
 
 Note the upstream option is `services.displayManager.regreet.*` — `programs.regreet.*` is the old, renamed name.
 
@@ -175,6 +178,7 @@ Sets NVIDIA-specific Wayland environment variables (`GBM_BACKEND`, `LIBVA_DRIVER
 - `bluetooth.enable` — Bluetooth stack and Blueman.
 - `hardware.mouse.logitech.enable` — Logitech wireless device support via `programs.solaar.enable`, which also turns on `hardware.logitech.wireless` and installs the package. (`hardware.logitech.wireless.enableGraphical` is the old, renamed name.)
 - `hardware.ddc.enable` — DDC/CI monitor control with ddcutil. The user needs the `i2c` group.
+- `hardware.keyboard.hyperTab.enable` — keyd makes Tab act as Hyper (Ctrl+Alt+Shift+Super) when held and Tab when tapped, mirroring the Karabiner setup on macOS.
 
 ### Security hardening (`security.hardening.profile`)
 Set to `"workstation"` or `"server"`. Both profiles apply base hardening (SSH, kernel sysctl, protectKernelImage, sudo.execWheelOnly). The workstation profile adds AppArmor; the server profile adds fail2ban, auditd, disabled sleep targets, and blacklisted USB/Firewire/Thunderbolt kernel modules.
