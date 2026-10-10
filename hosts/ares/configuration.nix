@@ -34,6 +34,7 @@
   bluetooth.enable = true;
   hardware.mouse.logitech.enable = true;
   hardware.ddc.enable = true;
+  hardware.keyboard.hyperTab.enable = true;
   hardware.enableRedistributableFirmware = true;
 
 
@@ -43,9 +44,9 @@
 
   desktop.regreet.enable = true;
   desktop.regreet.output = "ASUSTek COMPUTER INC PG34WCDN W4LMAS016832";
-  desktop.regreet.disableOutputs = [ "PNP(GSV) GSV HDMI2.1   0x00000001" ];
-  # desktop.hyprland.enable = true;
-  desktop.niri.enable = true;
+  desktop.regreet.disableOutputs = [ "GSV GSV HDMI2.1   0x00000001" ];
+  desktop.hyprland.enable = true;
+  # desktop.niri.enable = true;
   gaming.enable = true;
 
 

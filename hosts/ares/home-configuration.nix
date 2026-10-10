@@ -5,13 +5,13 @@
     ../../modules/home/base.nix
     ../../modules/home/desktop/cursor.nix
     ../../modules/home/desktop/fonts.nix
-    # ../../modules/home/desktop/hyprland.nix
+    ../../modules/home/desktop/hyprland.nix
     # ../../modules/home/desktop/waybar.nix
     # ../../modules/home/desktop/hyprlock.nix
     # ../../modules/home/desktop/hypridle.nix
     # ../../modules/home/desktop/rofi.nix
     ../../modules/home/desktop/gtk.nix
-    ../../modules/home/desktop/niri.nix
+    # ../../modules/home/desktop/niri.nix
     ../../modules/home/desktop/noctalia.nix
     # ../../modules/home/services/dunst.nix
     ../../modules/home/apps/terminals/ghostty.nix
