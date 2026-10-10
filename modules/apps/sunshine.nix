@@ -10,7 +10,7 @@ let
   asusMode =
     mode:
     pkgs.writeShellScript "sunshine-asus-${mode}" ''
-      exec ${lib.getExe' pkgs.niri "niri"} msg output "ASUSTek COMPUTER INC PG34WCDN W4LMAS016832" mode ${mode}
+      exec ${lib.getExe' config.programs.hyprland.package "hyprctl"} eval 'hl.monitor({ output = "desc:ASUSTek COMPUTER INC PG34WCDN W4LMAS016832", mode = "${mode}", position = "0x1440", scale = 1, vrr = 2 })'
     '';
   tcpPorts = [
     47984
