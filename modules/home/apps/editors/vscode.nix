@@ -8,7 +8,6 @@
       extensions = with pkgs.vscode-extensions; [
         jnoortheen.nix-ide
         anthropic.claude-code
-        Google.gemini-cli-vscode-ide-companion
         catppuccin.catppuccin-vsc
         catppuccin.catppuccin-vsc-icons
       ];

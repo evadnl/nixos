@@ -21,7 +21,6 @@
     ../../modules/home/apps/media/vlc.nix
     ../../modules/home/apps/gaming/default.nix
     ../../modules/home/apps/dev/claude-code.nix
-    ../../modules/home/apps/dev/gemini-cli.nix
     ../../modules/home/apps/dev/nodejs.nix
     ../../modules/home/shell/ssh.nix
     ../../modules/home/shell/zsh.nix
