@@ -4,61 +4,94 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Repo Is
 
-Personal NixOS flake configuration managing multiple systems. Each host lives under `hosts/<hostname>/` and is wired into `flake.nix`.
+Personal NixOS flake configuration. There is currently one host: `ares`, the main workstation. Each host lives under `hosts/<hostname>/` and is wired into `flake.nix`.
 
 ## Common Commands
 
+Recipes live in the `justfile` and are the preferred entry point:
+
 ```bash
-# Apply config to the current system (run on the NixOS machine)
+just switch <host>          # Apply configuration
+just test <host>            # Test without making permanent (rolls back on reboot)
+just build <host>           # Build without applying (useful for checking errors)
+just update <host>          # Update flake inputs and switch
+just home <user> <host>     # Apply home-manager config only (faster, no sudo)
+just clean [days]           # Remove generations older than N days (default 7) and GC
+just fmt                    # Format all Nix files
+just secrets                # Edit SOPS secrets
+just update-keys            # Re-encrypt secrets after adding a host to .sops.yaml
+just host-key               # Print this machine's age public key (run on the new host)
+```
+
+The underlying commands, when `just` is not available:
+
+```bash
 sudo nixos-rebuild switch --flake .#<hostname>
-
-# Test without making permanent (rolls back on reboot)
 sudo nixos-rebuild test --flake .#<hostname>
-
-# Build without applying (useful for checking errors)
 nix build .#nixosConfigurations.<hostname>.config.system.build.toplevel
-
-# Format Nix files
 nixfmt **/*.nix
+```
+
+To check a change evaluates without building it:
+
+```bash
+nix eval .#nixosConfigurations.<hostname>.config.system.build.toplevel.drvPath
 ```
 
 ## Architecture
 
 ```
-flake.nix          # Inputs: nixpkgs (unstable), disko, lanzaboote, sops-nix, home-manager
+flake.nix          # Inputs: nixpkgs (unstable), disko, lanzaboote, sops-nix,
+                   # home-manager, catppuccin, noctalia, zen-browser, nur
+justfile           # Task recipes (see Common Commands)
 secrets.yaml       # SOPS-encrypted secrets (age)
 .sops.yaml         # age key configuration for hosts and users
 hosts/
-  <hostname>/
+  ares/
     configuration.nix           # Host-specific NixOS config
     hardware-configuration.nix  # Hardware scan output
+    disk.nix                    # disko declarative partitioning
     home-configuration.nix      # Imports home-manager modules for this host
 modules/
   common.nix       # Shared packages applied across all hosts
-  desktop/         # Desktop environments (desktop.hyprland.enable)
+  gaming.nix       # Steam/gamemode profile (gaming.enable)
+  apps/            # System-level apps (1password)
+  desktop/         # Compositors and greeters (desktop.niri, desktop.hyprland,
+                   # desktop.regreet, desktop.sddm)
   drivers/         # Hardware drivers (drivers.amdCpu.enable, drivers.nvidia.enable)
+  hardware/        # bluetooth.enable, hardware.mouse.logitech.enable, hardware.ddc.enable
   network/         # Firewall with SSH subnet restrictions (network.firewall.enable)
   os/              # Locale, Lanzaboote secure boot, Wayland (os.secureBoot.enable, os.wayland.enable)
   security/        # System hardening profiles (security.hardening.profile)
   user/            # Primary user configuration (user.enable)
   home/
     base.nix                    # Home-manager base (stateVersion, etc.)
-    desktop/                    # fonts, hyprland, waybar
+    default.nix                 # Wires home-manager into the system
+    desktop/
+      niri.nix                  # Niri config; assembles the KDL fragments in niri/
+      niri/                     # outputs, inputs, layout, keybinds, rules, autostart
+      ...                       # cursor, fonts, gtk, noctalia, waybar, fuzzel, rofi,
+                                # hyprland/hyprlock/hypridle
+    shell/                      # zsh, starship, ssh
     services/                   # dunst
     apps/
-      browsers/firefox.nix
-      dev/claude-code.nix
+      browsers/                 # firefox.nix, zen.nix
+      dev/                      # claude-code.nix, nodejs.nix
       editors/
         vscode.nix              # programs.vscode.profiles.default.{extensions,userSettings}
         zed.nix                 # programs.zed-editor.{extensions,userSettings}
-      social/discord.nix
+      files/                    # thunar.nix, nautilus.nix
+      gaming/default.nix
+      hardware/streamdeck.nix
+      media/                    # spotify.nix, vlc.nix
+      social/                   # discord.nix, whatsapp.nix
       terminals/ghostty.nix
 ```
 
 ## Adding a New Host
 
 1. Create `hosts/<hostname>/configuration.nix` and `hosts/<hostname>/hardware-configuration.nix`
-2. Add the host to `flake.nix` under `nixosConfigurations.<hostname>`, importing the relevant modules
+2. Add the host to `flake.nix` under `nixosConfigurations.<hostname>`, importing the relevant modules. Pass `hostHomeModule` (plus the `catppuccin`/`noctalia`/`zen-browser` home modules) in `specialArgs`, and add a matching `homeConfigurations."<user>@<hostname>"` entry so `just home` works
 3. If the host needs SOPS secrets: get its age public key (`ssh-to-age < /etc/ssh/ssh_host_ed25519_key.pub`), add it to `.sops.yaml`, then run `sops updatekeys secrets.yaml`
 4. Structure `configuration.nix` using the standard section headers (see below)
 
@@ -70,6 +103,8 @@ All modules follow the same pattern:
 - Use `let cfg = config.<namespace>; in` at the top
 
 When adding a new module, wire it into the relevant hosts in `flake.nix`.
+
+Because nixpkgs tracks unstable, upstream options get renamed regularly. Renames surface as `evaluation warning: The option X ... has been renamed to Y` during a rebuild — chase them down rather than leaving them, since the compatibility shims are eventually dropped.
 
 ## Host Configuration Structure
 
@@ -102,6 +137,11 @@ Each `configuration.nix` uses consistent section headers in this order. Omit sec
 # Hostname, networkmanager, firewall
 
 # ===========================================================
+# FILESYSTEMS
+# ===========================================================
+# Extra mounts (local disks, NFS) — omit when there are none
+
+# ===========================================================
 # SERVICES
 # ===========================================================
 # System services (openssh, etc.)
@@ -117,11 +157,24 @@ Each `configuration.nix` uses consistent section headers in this order. Omit sec
 ### User (`user.*`)
 Declarative primary user. Set `user.sshPrivateKey.enable = true` to deploy the `ssh_private_key` secret from `secrets.yaml` to `/home/<user>/.ssh/id_ed25519` (symlink to `/run/secrets/ssh_private_key`). Authorized keys go in `user.authorizedKeys` — NixOS places them at `/etc/ssh/authorized_keys.d/<user>`, not `~/.ssh/authorized_keys`.
 
+### Niri (`desktop.niri.enable`)
+The compositor `ares` actually runs. Scrollable-tiling Wayland compositor with Xwayland-satellite, Pipewire audio (PulseAudio + ALSA compat), libinput and dconf. Enable alongside `os.wayland.enable`. The user-level config lives in `modules/home/desktop/niri.nix`, which assembles the KDL fragments under `modules/home/desktop/niri/`.
+
 ### Hyprland (`desktop.hyprland.enable`)
-Wayland compositor with Pipewire audio (PulseAudio + ALSA compat), rtkit for realtime scheduling, and greetd/tuigreet login manager. The greeter pre-fills the username from `config.user.name`. Enable alongside `os.wayland.enable` on any desktop host.
+Alternative Wayland compositor with UWSM, Pipewire audio (PulseAudio + ALSA compat) and rtkit for realtime scheduling. Currently commented out on `ares` in favour of Niri, but kept working. Enable alongside `os.wayland.enable`.
+
+### ReGreet (`desktop.regreet.enable`)
+Graphical greetd greeter, themed with Catppuccin Mocha. Enabling it pulls in greetd. Set `desktop.regreet.output` to pin the greeter to one monitor — that swaps the default cage compositor for a dedicated niri instance, and `desktop.regreet.disableOutputs` lists the monitors it switches off. The module carries an overlay adding GStreamer runtime deps to `pkgs.regreet`; without it a wallpaper makes ReGreet 0.4.0 SIGABRT into a greetd respawn loop (black login screen). Drop the overlay once the nixpkgs pin includes nixpkgs#530302.
+
+Note the upstream option is `services.displayManager.regreet.*` — `programs.regreet.*` is the old, renamed name.
 
 ### Wayland (`os.wayland.enable`)
 Sets NVIDIA-specific Wayland environment variables (`GBM_BACKEND`, `LIBVA_DRIVER_NAME`, `__GLX_VENDOR_LIBRARY_NAME`, `NVD_BACKEND`, `NIXOS_OZONE_WL`). Enable on any host running a Wayland compositor with an NVIDIA GPU.
+
+### Hardware (`modules/hardware/`)
+- `bluetooth.enable` — Bluetooth stack and Blueman.
+- `hardware.mouse.logitech.enable` — Logitech wireless device support via `programs.solaar.enable`, which also turns on `hardware.logitech.wireless` and installs the package. (`hardware.logitech.wireless.enableGraphical` is the old, renamed name.)
+- `hardware.ddc.enable` — DDC/CI monitor control with ddcutil. The user needs the `i2c` group.
 
 ### Security hardening (`security.hardening.profile`)
 Set to `"workstation"` or `"server"`. Both profiles apply base hardening (SSH, kernel sysctl, protectKernelImage, sudo.execWheelOnly). The workstation profile adds AppArmor; the server profile adds fail2ban, auditd, disabled sleep targets, and blacklisted USB/Firewire/Thunderbolt kernel modules.
