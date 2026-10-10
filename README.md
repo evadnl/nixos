@@ -1,13 +1,12 @@
 # NixOS Configuration
 
-Personal NixOS flake configuration managing two systems.
+Personal NixOS flake configuration.
 
 ## Systems
 
 | Host | Description |
 |------|-------------|
 | **ares** | Main workstation — AMD Ryzen 7 9800X3D + RTX 5080, Secure Boot via Lanzaboote |
-| **nixos-vm** | QEMU virtual machine for testing, headless access via wayvnc |
 
 ## Usage
 

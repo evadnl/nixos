@@ -56,26 +56,6 @@
       ...
     }:
     {
-      nixosConfigurations.nixos-vm = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = {
-          hostHomeModule = ./hosts/nixos-vm/home-configuration.nix;
-          catppuccinHomeModule = catppuccin.homeModules.catppuccin;
-          noctaliaHomeModule = noctalia.homeModules.default;
-          zenBrowserModule = zen-browser.homeModules.beta;
-        };
-        modules = [
-          home-manager.nixosModules.home-manager
-          sops-nix.nixosModules.sops
-          ./hosts/nixos-vm/configuration.nix
-          ./modules/desktop/regreet.nix
-          ./modules/desktop/hyprland.nix
-          ./modules/common.nix
-          ./modules/user/default.nix
-          ./modules/home/default.nix
-        ];
-      };
-
       nixosConfigurations.ares = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = {
@@ -114,19 +94,6 @@
           ./modules/security/server.nix
           ./modules/security/workstation.nix
           ./modules/home/default.nix
-        ];
-      };
-
-      homeConfigurations."evad@nixos-vm" = home-manager.lib.homeManagerConfiguration {
-        pkgs = import nixpkgs { system = "x86_64-linux"; config.allowUnfree = true; };
-        modules = [
-          catppuccin.homeModules.catppuccin
-          noctalia.homeModules.default
-          ./hosts/nixos-vm/home-configuration.nix
-          {
-            home.username = "evad";
-            home.homeDirectory = "/home/evad";
-          }
         ];
       };
 
