@@ -33,6 +33,7 @@
   drivers.amdCpu.enable = true;
   bluetooth.enable = true;
   hardware.mouse.logitech.enable = true;
+  hardware.ddc.enable = true;
   hardware.enableRedistributableFirmware = true;
 
 
@@ -56,7 +57,7 @@
     enable = true;
     name = "evad";
     wheel = true;
-    extraGroups = [ "networkmanager" ];
+    extraGroups = [ "networkmanager" "i2c" ];
     initialPassword = "changeme";
     sshPrivateKey.enable = true;
     zsh.enable = true;
@@ -75,7 +76,24 @@
 
   networking.hostName = "ares";
   networking.networkmanager.enable = true;
+  networking.networkmanager.ensureProfiles.profiles.lan = {
+    connection = {
+      id = "lan";
+      type = "ethernet";
+      interface-name = "eno1";
+      autoconnect = true;
+      autoconnect-priority = 100;
+    };
+    ipv4 = {
+      method = "manual";
+      address1 = "192.168.1.8/24,192.168.1.1";
+      dns = "10.30.0.101;10.30.0.102;";
+      ignore-auto-dns = true;
+    };
+  };
   network.firewall.enable = true;
+  apps.sunshine.enable = true;
+  apps.sunshine.extraSubnets = [ "10.100.0.0/24" ];
 
 
   # ===========================================================

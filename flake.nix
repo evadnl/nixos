@@ -77,9 +77,11 @@
           ./hosts/ares/hardware-configuration.nix
           ./modules/common.nix
           ./modules/apps/1password.nix
+          ./modules/apps/sunshine.nix
           ./modules/gaming.nix
           ./modules/hardware/bluetooth.nix
           ./modules/hardware/mouse.nix
+          ./modules/hardware/ddc.nix
           ./modules/desktop/regreet.nix
           ./modules/desktop/hyprland.nix
           ./modules/desktop/niri.nix
