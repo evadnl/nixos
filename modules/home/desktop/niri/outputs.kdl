@@ -7,9 +7,9 @@
     // HDMI-A-1/HDMI-A-2 labels swap around, which is why the displays kept switching.
     // EDID identity is stable per physical monitor, so match on that instead.
 
-    // LG 34" ultrawide (85 Hz)
+    // LG 34" ultrawide (160 Hz)
     output "LG Electronics LG ULTRAGEAR 103NTBK9D077" {
-        mode "3440x1440@85"
+        mode "3440x1440@160"
         transform "normal"
         position x=0 y=0
     }
