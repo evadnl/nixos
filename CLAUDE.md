@@ -42,7 +42,7 @@ nix eval .#nixosConfigurations.<hostname>.config.system.build.toplevel.drvPath
 
 ```
 flake.nix          # Inputs: nixpkgs (unstable), disko, lanzaboote, sops-nix,
-                   # home-manager, catppuccin, noctalia, zen-browser, nur
+                   # home-manager, catppuccin, noctalia
 justfile           # Task recipes (see Common Commands)
 secrets.yaml       # SOPS-encrypted secrets (age)
 .sops.yaml         # age key configuration for hosts and users
@@ -78,7 +78,7 @@ modules/
     shell/                      # zsh, starship, ssh
     services/                   # dunst
     apps/
-      browsers/                 # firefox.nix, zen.nix
+      browsers/                 # firefox.nix
       dev/                      # claude-code.nix, nodejs.nix
       editors/
         vscode.nix              # programs.vscode.profiles.default.{extensions,userSettings}
@@ -94,7 +94,7 @@ modules/
 ## Adding a New Host
 
 1. Create `hosts/<hostname>/configuration.nix` and `hosts/<hostname>/hardware-configuration.nix`
-2. Add the host to `flake.nix` under `nixosConfigurations.<hostname>`, importing the relevant modules. Pass `hostHomeModule` (plus the `catppuccin`/`noctalia`/`zen-browser` home modules) in `specialArgs`, and add a matching `homeConfigurations."<user>@<hostname>"` entry so `just home` works
+2. Add the host to `flake.nix` under `nixosConfigurations.<hostname>`, importing the relevant modules. Pass `hostHomeModule` (plus the `catppuccin`/`noctalia` home modules) in `specialArgs`, and add a matching `homeConfigurations."<user>@<hostname>"` entry so `just home` works
 3. If the host needs SOPS secrets: get its age public key (`ssh-to-age < /etc/ssh/ssh_host_ed25519_key.pub`), add it to `.sops.yaml`, then run `sops updatekeys secrets.yaml`
 4. Structure `configuration.nix` using the standard section headers (see below)
 

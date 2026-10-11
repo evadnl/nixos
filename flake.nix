@@ -30,16 +30,6 @@
       url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    zen-browser = {
-      url = "github:0xc000022070/zen-browser-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nur = {
-      url = "github:nix-community/NUR";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =
@@ -51,8 +41,6 @@
       home-manager,
       catppuccin,
       noctalia,
-      zen-browser,
-      nur,
       ...
     }:
     {
@@ -62,12 +50,8 @@
           hostHomeModule = ./hosts/ares/home-configuration.nix;
           catppuccinHomeModule = catppuccin.homeModules.catppuccin;
           noctaliaHomeModule = noctalia.homeModules.default;
-          zenBrowserModule = zen-browser.homeModules.beta;
         };
         modules = [
-          {
-            nixpkgs.overlays = [ nur.overlays.default ];
-          }
           home-manager.nixosModules.home-manager
           disko.nixosModules.disko
           lanzaboote.nixosModules.lanzaboote
