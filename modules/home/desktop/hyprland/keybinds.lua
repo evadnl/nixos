@@ -84,6 +84,7 @@ hl.bind(hyper .. " + B",      hl.dsp.exec_cmd(browser))
 hl.bind(hyper .. " + C",      hl.dsp.exec_cmd("code"))
 
 hl.bind(hyper .. " + W", hl.dsp.submap("snap"))
+hl.bind("W", hl.dsp.submap("reset"), { release = true, ignore_mods = true, non_consuming = true, transparent = true })
 
 hl.define_submap("snap", function()
     hl.bind(hyper .. " + H",      place(0, 0.5))
