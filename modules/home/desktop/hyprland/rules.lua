@@ -43,13 +43,6 @@ hl.window_rule({
 })
 
 hl.window_rule({
-    name  = "spotify-workspace",
-    match = { class = "^[Ss]potify$" },
-
-    workspace = "name:other",
-})
-
-hl.window_rule({
     name  = "ghostty-opacity",
     match = { class = "^com\\.mitchellh\\.ghostty(-float)?$" },
 
