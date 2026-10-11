@@ -159,6 +159,16 @@ hl.bind(mainMod .. " + SHIFT + F", hl.dsp.window.fullscreen({ mode = "fullscreen
 hl.bind(mainMod .. " + V",         hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + C",         hl.dsp.window.center())
 
+local function cycle(next)
+    return function()
+        hl.dispatch(hl.dsp.window.cycle_next({ next = next }))
+        hl.dispatch(hl.dsp.window.bring_to_top())
+    end
+end
+
+hl.bind("ALT + Tab",         cycle(true))
+hl.bind("ALT + SHIFT + Tab", cycle(false))
+
 hl.bind(mainMod .. " + Minus",         hl.dsp.window.resize({ x = -100, y = 0, relative = true }),   { repeating = true })
 hl.bind(mainMod .. " + Equal",         hl.dsp.window.resize({ x = 100, y = 0, relative = true }),    { repeating = true })
 hl.bind(mainMod .. " + SHIFT + Minus", hl.dsp.window.resize({ x = 0, y = -100, relative = true }),   { repeating = true })
