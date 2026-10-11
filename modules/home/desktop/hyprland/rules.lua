@@ -6,6 +6,14 @@ hl.window_rule({
 })
 
 hl.window_rule({
+    name  = "default-size",
+    match = { class = "negative:^steam$", modal = false },
+
+    size   = "monitor_w*0.6 monitor_h*0.7",
+    center = true,
+})
+
+hl.window_rule({
     name  = "fix-xwayland-drags",
     match = {
         class      = "^$",
