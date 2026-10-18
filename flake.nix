@@ -30,6 +30,12 @@
       url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    plasma-manager = {
+      url = "github:nix-community/plasma-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
   };
 
   outputs =
@@ -41,6 +47,7 @@
       home-manager,
       catppuccin,
       noctalia,
+      plasma-manager,
       ...
     }:
     {
@@ -50,6 +57,7 @@
           hostHomeModule = ./hosts/ares/home-configuration.nix;
           catppuccinHomeModule = catppuccin.homeModules.catppuccin;
           noctaliaHomeModule = noctalia.homeModules.default;
+          plasmaHomeModule = plasma-manager.homeModules.plasma-manager;
         };
         modules = [
           home-manager.nixosModules.home-manager
@@ -71,6 +79,7 @@
           ./modules/desktop/hyprland.nix
           ./modules/desktop/labwc.nix
           ./modules/desktop/niri.nix
+          ./modules/desktop/plasma.nix
           ./modules/drivers/amd-cpu.nix
           ./modules/drivers/nvidia.nix
           ./modules/os/locale.nix
@@ -90,6 +99,7 @@
         modules = [
           catppuccin.homeModules.catppuccin
           noctalia.homeModules.default
+          plasma-manager.homeModules.plasma-manager
           ./hosts/ares/home-configuration.nix
           {
             home.username = "evad";

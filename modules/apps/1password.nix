@@ -1,4 +1,4 @@
-{ ... }:
+{ lib, ... }:
 
 {
   programs._1password-gui = {
@@ -8,5 +8,5 @@
 
   programs._1password.enable = true;
 
-  services.gnome.gnome-keyring.enable = true;
+  services.gnome.gnome-keyring.enable = lib.mkDefault true;
 }

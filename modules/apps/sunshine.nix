@@ -8,9 +8,17 @@
 let
   cfg = config.apps.sunshine;
   asusMode =
-    mode:
-    pkgs.writeShellScript "sunshine-asus-${mode}" ''
-      exec ${lib.getExe' config.programs.hyprland.package "hyprctl"} eval 'hl.monitor({ output = "desc:ASUSTek COMPUTER INC PG34WCDN W4LMAS016832", mode = "${mode}", position = "0x1440", scale = 1, vrr = 2 })'
+    width: height: refresh:
+    pkgs.writeShellScript "sunshine-asus-${toString width}x${toString height}" ''
+      kscreen=${lib.getExe' pkgs.kdePackages.libkscreen "kscreen-doctor"}
+      target=$("$kscreen" -j | ${lib.getExe pkgs.jq} -r '
+        .outputs[]
+        | select(any(.modes[]; .size.width == 3440 and .size.height == 1440 and .refreshRate > 300))
+        | .name as $name
+        | [.modes[] | select(.size.width == ${toString width} and .size.height == ${toString height})]
+        | min_by((.refreshRate - ${toString refresh}) | fabs)
+        | "\($name).mode.\(.id)"')
+      [ -n "$target" ] && exec "$kscreen" "output.$target"
     '';
   tcpPorts = [
     47984
@@ -51,8 +59,8 @@ in
       openFirewall = false;
       settings.global_prep_cmd = builtins.toJSON [
         {
-          do = "${asusMode "1920x1080@119.879"}";
-          undo = "${asusMode "3440x1440@360.097"}";
+          do = "${asusMode 1920 1080 119.879}";
+          undo = "${asusMode 3440 1440 360.097}";
         }
       ];
     };

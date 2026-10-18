@@ -15,8 +15,18 @@ in
         ids = [ "*" ];
         settings = {
           main.tab = "overload(hyper, tab)";
-          "hyper:C-A-S-M" = { };
+          "hyper:C-A-S-M" = {
+            w = "layer(snap)";
+          };
+          snap = { };
         };
+        extraConfig = ''
+          [hyper+snap]
+          ${lib.concatMapStringsSep "\n" (key: "${key} = C-A-M-${key}") [
+            "h" "j" "k" "l" "y" "u" "i" "o" "p" "n" "m"
+            "comma" "dot" "minus" "equal" "enter" "space" "up" "down"
+          ]}
+        '';
       };
     };
   };

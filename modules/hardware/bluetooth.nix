@@ -18,6 +18,6 @@ in
       };
     };
 
-    services.blueman.enable = true;
+    services.blueman.enable = lib.mkDefault true;
   };
 }

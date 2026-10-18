@@ -1,0 +1,12 @@
+{
+    "KPackageStructure": "Plasma/Applet",
+    "KPlugin": {
+        "Id": "nl.evad.powermenu",
+        "Name": "Power Menu",
+        "Description": "Restart, shut down, or restart into UEFI firmware setup",
+        "Icon": "system-shutdown",
+        "Version": "1.0",
+        "License": "MIT"
+    },
+    "X-Plasma-API-Minimum-Version": "6.0"
+}

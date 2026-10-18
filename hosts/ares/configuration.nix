@@ -42,10 +42,7 @@
   # DESKTOP
   # ===========================================================
 
-  desktop.regreet.enable = true;
-  desktop.regreet.output = "ASUSTek COMPUTER INC PG34WCDN W4LMAS016832";
-  desktop.regreet.disableOutputs = [ "GSV GSV HDMI2.1   0x00000001" ];
-  desktop.hyprland.enable = true;
+  desktop.plasma.enable = true;
   # desktop.niri.enable = true;
   gaming.enable = true;
 
@@ -174,15 +171,6 @@ fileSystems."/mnt/nas/fotos" = {
     # nvme1n1p1 NTFS "GAMES" partition (not in fstab)
     ENV{ID_FS_UUID}=="B47A52777A5235F8", ENV{UDISKS_IGNORE}="1"
   '';
-
-  programs.thunar = {
-    enable = true;
-    plugins = with pkgs; [
-      thunar-volman
-      thunar-archive-plugin
-    ];
-  };
-  services.tumbler.enable = true;
 
 
   # ===========================================================
