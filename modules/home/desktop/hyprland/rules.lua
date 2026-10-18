@@ -43,6 +43,13 @@ hl.window_rule({
 })
 
 hl.window_rule({
+    name  = "games",
+    match = { class = "^(bg3|steam_app_\\d+)$" },
+
+    workspace = "5",
+})
+
+hl.window_rule({
     name  = "ghostty-opacity",
     match = { class = "^com\\.mitchellh\\.ghostty(-float)?$" },
 
@@ -80,8 +87,26 @@ hl.window_rule({
     no_focus         = true,
 })
 
+local captureCard = "GSV GSV HDMI2.1"
+local mainMonitor = "ASUSTek COMPUTER INC PG34WCDN W4LMAS016832"
+
+local function keepOffCaptureCard(w, ws)
+    if w.class == "at.yrlf.wl_mirror" then return end
+    if not (ws and ws.monitor and ws.monitor.description:find(captureCard, 1, true) == 1) then return end
+
+    for _, m in ipairs(hl.get_monitors()) do
+        if m.description:find(mainMonitor, 1, true) == 1 and m.active_workspace then
+            hl.dispatch(hl.dsp.window.move({ workspace = m.active_workspace.id, window = "address:" .. w.address }))
+            return
+        end
+    end
+end
+
 hl.on("window.open", function(w)
     if w.class == "at.yrlf.wl_mirror" then
         hl.dispatch(hl.dsp.window.fullscreen({ mode = "fullscreen", action = "set", window = "address:" .. w.address }))
     end
+    keepOffCaptureCard(w, w.workspace)
 end)
+
+hl.on("window.move_to_workspace", keepOffCaptureCard)

@@ -104,6 +104,8 @@ hl.define_submap("snap", function()
     hl.bind(hyper .. " + Equal",  grow(30),  { repeating = true })
     hl.bind(hyper .. " + Minus",  grow(-30), { repeating = true })
     hl.bind(hyper .. " + P",      cycleApp)
+    hl.bind(hyper .. " + up",     hl.dsp.window.move({ monitor = "u" }))
+    hl.bind(hyper .. " + down",   hl.dsp.window.move({ monitor = "d" }))
 
     hl.bind("W",      hl.dsp.submap("reset"), { release = true, ignore_mods = true })
     hl.bind("Escape", hl.dsp.submap("reset"), { ignore_mods = true })

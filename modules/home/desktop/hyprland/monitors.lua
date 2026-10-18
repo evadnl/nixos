@@ -29,3 +29,4 @@ hl.monitor({
 
 hl.workspace_rule({ workspace = "1", monitor = "desc:ASUSTek COMPUTER INC PG34WCDN W4LMAS016832", default = true })
 hl.workspace_rule({ workspace = "2", monitor = "desc:LG Electronics LG ULTRAGEAR 103NTBK9D077", default = true })
+hl.workspace_rule({ workspace = "5", monitor = "desc:ASUSTek COMPUTER INC PG34WCDN W4LMAS016832" })
