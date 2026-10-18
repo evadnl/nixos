@@ -1,0 +1,41 @@
+border.width: 2
+window.titlebar.padding.width: 6
+window.titlebar.padding.height: 0
+
+window.active.border.color: #89b4fa
+window.inactive.border.color: #181825
+
+window.active.title.bg: Solid
+window.active.title.bg.color: #1e1e2e
+window.inactive.title.bg: Solid
+window.inactive.title.bg.color: #181825
+
+window.active.label.text.color: #cdd6f4
+window.inactive.label.text.color: #6c7086
+window.label.text.justify: center
+
+window.button.width: 22
+window.button.height: 26
+window.button.spacing: 0
+
+window.active.shadow.size: 40
+window.inactive.shadow.size: 24
+window.active.shadow.color: #00000080
+window.inactive.shadow.color: #00000050
+
+menu.items.bg.color: #1e1e2e
+menu.items.text.color: #cdd6f4
+menu.items.active.bg.color: #313244
+menu.items.active.text.color: #cdd6f4
+menu.separator.color: #45475a
+menu.border.color: #89b4fa
+menu.border.width: 1
+
+osd.bg.color: #1e1e2e
+osd.border.color: #89b4fa
+osd.border.width: 1
+osd.label.text.color: #cdd6f4
+osd.window-switcher.style-classic.item.active.border.color: #89b4fa
+osd.window-switcher.style-classic.item.active.bg.color: #313244
+osd.window-switcher.style-thumbnail.item.active.border.color: #89b4fa
+osd.window-switcher.style-thumbnail.item.active.bg.color: #313244

@@ -69,6 +69,7 @@
           ./modules/hardware/keyboard.nix
           ./modules/desktop/regreet.nix
           ./modules/desktop/hyprland.nix
+          ./modules/desktop/labwc.nix
           ./modules/desktop/niri.nix
           ./modules/drivers/amd-cpu.nix
           ./modules/drivers/nvidia.nix

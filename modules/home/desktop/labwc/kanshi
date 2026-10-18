@@ -1,0 +1,10 @@
+profile ares {
+    output "LG Electronics LG ULTRAGEAR 103NTBK9D077" mode 3440x1440@160Hz position 0,0 scale 1
+    output "ASUSTek COMPUTER INC PG34WCDN W4LMAS016832" mode 3440x1440@360.097Hz position 0,1440 scale 1
+    output "GSV GSV HDMI2.1*" mode --custom 3440x1440@60Hz position 3640,0 scale 1
+}
+
+profile ares-no-capture {
+    output "LG Electronics LG ULTRAGEAR 103NTBK9D077" mode 3440x1440@160Hz position 0,0 scale 1
+    output "ASUSTek COMPUTER INC PG34WCDN W4LMAS016832" mode 3440x1440@360.097Hz position 0,1440 scale 1
+}
